@@ -368,8 +368,7 @@
         <table class="excel" id="vorTable">
           <thead>
             <tr>
-              <th style="width: 44px;">печать</th>
-              <th style="width: 44px;">№ п/п</th>
+              <th style="width: 48px;">№ п/п</th>
               <th>Наименование</th>
               <th style="width: 65px;">Ед. измер.</th>
               <th style="width: 80px;">Количество</th>
@@ -391,7 +390,6 @@
         <table class="excel" id="specTable">
           <thead>
             <tr>
-              <th>Печать</th>
               <th>Поз.</th>
               <th>Наименование и техническая характеристика</th>
               <th>Тип, марка, обозначение документа, опросного листа</th>
@@ -408,7 +406,6 @@
               <th>Примечание</th>
             </tr>
             <tr class="num-row">
-              <th></th>
               <th>1</th>
               <th>2</th>
               <th>3</th>
@@ -696,7 +693,7 @@
     return 0;
   }
 
-  const STORAGE_KEY = "gnb_pont_app_final_v1";
+  const STORAGE_KEY = "gnb_pont_app_final_v2";
 
   let state = {
     lineName: "!!!Название линии!!!",
@@ -1051,14 +1048,12 @@
       <div class="kpi-item">Вода: <strong>${fmt(calc.totalWaterLiters, 0)} л</strong> (${fmt(calc.totalWaterLiters / 1000, 3)} м³)</div>
     `;
 
-    // --- ВОР ---
+    // --- ВОР (без столбца "печать") ---
     const vorRows = [];
-    let printIdx = 1;
     let itemIdx = 1;
 
     vorRows.push(`
       <tr class="title-row">
-        <td class="tc">${printIdx++}</td>
         <td></td>
         <td>Строительство ${escapeHtml(state.lineName)} методом ГНБ</td>
         <td></td>
@@ -1069,7 +1064,6 @@
 
     vorRows.push(`
       <tr>
-        <td class="tc">${printIdx++}</td>
         <td class="tc">${itemIdx++}</td>
         <td>Общая длина ГНБ (${calc.totalDrillsCount} уч., ${fmt(calc.totalBoreLength, 2)}м)</td>
         <td class="tc">м</td>
@@ -1080,7 +1074,6 @@
 
     vorRows.push(`
       <tr>
-        <td class="tc">${printIdx++}</td>
         <td class="tc">${itemIdx++}</td>
         <td>Рытье приямка для ГНБ, (2*2*2м3)</td>
         <td class="tc">м3</td>
@@ -1091,7 +1084,6 @@
 
     vorRows.push(`
       <tr>
-        <td class="tc">${printIdx++}</td>
         <td class="tc">${itemIdx++}</td>
         <td>Обратная засыпка приямка ГНБ, (2*2*2м3)</td>
         <td class="tc">м3</td>
@@ -1105,7 +1097,6 @@
       if (g.length > 0 || !calc.showZero) {
         vorRows.push(`
           <tr>
-            <td class="tc">${g.length > 0 ? printIdx++ : ""}</td>
             <td class="tc">${g.length > 0 ? itemIdx++ : ""}</td>
             <td>Прокладка ${g.nTubes}тр.-d.${g.dia}мм. в 1 бур.кан.</td>
             <td class="tc">м</td>
@@ -1123,7 +1114,6 @@
           vorRows.push(`
             <tr class="zero-row">
               <td></td>
-              <td></td>
               <td>Прокладка в 1 бур.кан. (ГНБ тип${t})</td>
               <td class="tc">м</td>
               <td class="tr">0</td>
@@ -1136,7 +1126,6 @@
 
     vorRows.push(`
       <tr>
-        <td class="tc">${printIdx++}</td>
         <td class="tc">${itemIdx++}</td>
         <td>Прокладка кабеля ${escapeHtml(calc.vorCableTitle)} методом ГНБ</td>
         <td class="tc">м</td>
@@ -1152,7 +1141,6 @@
 
     vorRows.push(`
       <tr>
-        <td class="tc">${printIdx++}</td>
         <td class="tc">${itemIdx++}</td>
         <td>Герметизация кабельного ввода в трубу (УКПТ)</td>
         <td class="tc">шт</td>
@@ -1163,14 +1151,12 @@
 
     document.getElementById("vorBody").innerHTML = vorRows.join("");
 
-    // --- Спецификация ---
+    // --- Спецификация (без столбца "Печать") ---
     const specRows = [];
-    let sPrint = 1;
     let sPos = 1;
 
     specRows.push(`
       <tr class="title-row">
-        <td class="tc">${sPrint++}</td>
         <td></td>
         <td colspan="13" style="text-align:center;">Строительство ${escapeHtml(state.lineName)} методом ГНБ</td>
       </tr>
@@ -1178,7 +1164,6 @@
 
     specRows.push(`
       <tr class="section-row">
-        <td class="tc">${sPrint++}</td>
         <td></td>
         <td colspan="13">Кабельная продукция</td>
       </tr>
@@ -1193,7 +1178,6 @@
 
     specRows.push(`
       <tr>
-        <td class="tc">${sPrint++}</td>
         <td class="tc">${sPos++}</td>
         <td>Кабель силовой</td>
         <td class="nw">${escapeHtml(calc.fullCableMark)}</td>
@@ -1213,7 +1197,6 @@
 
     specRows.push(`
       <tr class="section-row">
-        <td class="tc">${sPrint++}</td>
         <td></td>
         <td colspan="13">Трубы</td>
       </tr>
@@ -1226,7 +1209,6 @@
       const fgisQty = p.coef === 1 ? fmt(qty, 2) : "-";
       specRows.push(`
         <tr class="${qty === 0 ? "zero-row" : ""}">
-          <td class="tc">${qty > 0 ? sPrint++ : ""}</td>
           <td class="tc">${qty > 0 ? sPos++ : ""}</td>
           <td>${p.name}</td>
           <td>${p.doc}</td>
@@ -1247,7 +1229,6 @@
 
     specRows.push(`
       <tr class="section-row">
-        <td class="tc">${sPrint++}</td>
         <td></td>
         <td colspan="13">Материалы</td>
       </tr>
@@ -1261,7 +1242,6 @@
       const fgisQty = u.coef === 1 ? fmt(qty, 0) : "-";
       specRows.push(`
         <tr class="${qty === 0 ? "zero-row" : ""}">
-          <td class="tc">${qty > 0 ? sPrint++ : ""}</td>
           <td class="tc">${qty > 0 ? sPos++ : ""}</td>
           <td>Уплотнитель кабельных проходов</td>
           <td class="nw">${u.type}</td>
@@ -1289,7 +1269,6 @@
 
       specRows.push(`
         <tr class="${qtyRounded === 0 ? "zero-row" : ""}">
-          <td class="tc">${qtyRounded > 0 ? sPrint++ : ""}</td>
           <td class="tc">${qtyRounded > 0 ? sPos++ : ""}</td>
           <td>${m.name}</td>
           <td class="nw">${m.type}</td>
@@ -1313,7 +1292,6 @@
     if (waterQty > 0 || calc.showZero) {
       specRows.push(`
         <tr class="${waterQty === 0 ? "zero-row" : ""}">
-          <td class="tc">${waterQty > 0 ? sPrint++ : ""}</td>
           <td class="tc">${waterQty > 0 ? sPos++ : ""}</td>
           <td>Вода техническая</td>
           <td></td>
