@@ -435,46 +435,38 @@
 <script>
   const PI_EXCEL = 3.14;
 
-  // База кабелей по таблицам выбора труб 0,4 кВ и 6/10 кВ
+  // База кабелей строго по приложенной таблице (25 позиций)
   const CABLE_CATALOG = [
-    // 0,4 кВ — АВБбШв-1 (4-жильный от 16 до 240 мм²)
-    { id: "avbbshv_4x16",  vGroup: "0.4", label: "АВБбШв 4х16-1 (4-жильный, 16 мм²)",   baseMark: "АВБбШв 4х16",   mult: 1, pipe: "63",  weight: 0.721, mdm: "40367", fgis: "21.1.06.08-1604", fgisName: "Кабель силовой с алюминиевыми жилами АВБбШв 4х16-1" },
-    { id: "avbbshv_4x25",  vGroup: "0.4", label: "АВБбШв 4х25-1 (4-жильный, 25 мм²)",   baseMark: "АВБбШв 4х25",   mult: 1, pipe: "63",  weight: 0.960, mdm: "40368", fgis: "21.1.06.08-1605", fgisName: "Кабель силовой с алюминиевыми жилами" },
-    { id: "avbbshv_4x35",  vGroup: "0.4", label: "АВБбШв 4х35-1 (4-жильный, 35 мм²)",   baseMark: "АВБбШв 4х35",   mult: 1, pipe: "63",  weight: 1.190, mdm: "40369", fgis: "21.1.06.08-1606", fgisName: "Кабель силовой с алюминиевыми жилами" },
-    { id: "avbbshv_4x50",  vGroup: "0.4", label: "АВБбШв 4х50-1 (4-жильный, 50 мм²)",   baseMark: "АВБбШв 4х50",   mult: 1, pipe: "110", weight: 1.540, mdm: "40370", fgis: "21.1.06.08-1607", fgisName: "Кабель силовой с алюминиевыми жилами" },
-    { id: "avbbshv_4x70",  vGroup: "0.4", label: "АВБбШв 4х70-1 (4-жильный, 70 мм²)",   baseMark: "АВБбШв 4х70",   mult: 1, pipe: "110", weight: 2.020, mdm: "40371", fgis: "21.1.06.08-1608", fgisName: "Кабель силовой с алюминиевыми жилами" },
-    { id: "avbbshv_4x95",  vGroup: "0.4", label: "АВБбШв 4х95-1 (4-жильный, 95 мм²)",   baseMark: "АВБбШв 4х95",   mult: 1, pipe: "110", weight: 2.610, mdm: "40372", fgis: "21.1.06.08-1609", fgisName: "Кабель силовой с алюминиевыми жилами" },
-    { id: "avbbshv_4x120", vGroup: "0.4", label: "АВБбШв 4х120-1 (4-жильный, 120 мм²)", baseMark: "АВБбШв 4х120",  mult: 1, pipe: "110", weight: 3.150, mdm: "40373", fgis: "21.1.06.08-1610", fgisName: "Кабель силовой с алюминиевыми жилами" },
-    { id: "avbbshv_4x150", vGroup: "0.4", label: "АВБбШв 4х150-1 (4-жильный, 150 мм²)", baseMark: "АВБбШв 4х150",  mult: 1, pipe: "110", weight: 3.820, mdm: "40374", fgis: "21.1.06.08-1611", fgisName: "Кабель силовой с алюминиевыми жилами" },
-    { id: "avbbshv_4x185", vGroup: "0.4", label: "АВБбШв 4х185-1 (4-жильный, 185 мм²)", baseMark: "АВБбШв 4х185",  mult: 1, pipe: "160", weight: 4.650, mdm: "40375", fgis: "21.1.06.08-1612", fgisName: "Кабель силовой с алюминиевыми жилами" },
-    { id: "avbbshv_4x240", vGroup: "0.4", label: "АВБбШв 4х240-1 (4-жильный, 240 мм²)", baseMark: "АВБбШв 4х240",  mult: 1, pipe: "160", weight: 5.910, mdm: "40376", fgis: "21.1.06.08-1613", fgisName: "Кабель силовой с алюминиевыми жилами" },
+    // Кабель масляный на 6(10) кВ
+    { id: "aabl_3x240", vGroup: "6_10", label: "ААБл 3х240-10", baseMark: "ААБл 3х240", mult: 1, pipe: "160", weight: 5.475, mdm: "11383", fgis: "21.1.07.02-0100", fgisName: "Кабель силовой с алюминиевыми жилами ААБл 3х240(ож)-10000" },
+    { id: "aabl_3x185", vGroup: "6_10", label: "ААБл 3х185-10", baseMark: "ААБл 3х185", mult: 1, pipe: "160", weight: 4.713, mdm: "11382", fgis: "21.1.07.02-0099", fgisName: "Кабель силовой с алюминиевыми жилами ААБл 3х185-10000" },
+    { id: "aabl_3x150", vGroup: "6_10", label: "ААБл 3х150-10", baseMark: "ААБл 3х150", mult: 1, pipe: "110", weight: 4.161, mdm: "11381", fgis: "21.1.07.02-0098", fgisName: "Кабель силовой с алюминиевыми жилами ААБл 3х150-10000" },
+    { id: "aabl_3x120", vGroup: "6_10", label: "ААБл 3х120-10", baseMark: "ААБл 3х120", mult: 1, pipe: "110", weight: 3.705, mdm: "11380", fgis: "21.1.07.02-0097", fgisName: "Кабель силовой с алюминиевыми жилами ААБл 3х120-10000" },
+    { id: "aabl_3x95",  vGroup: "6_10", label: "ААБл 3х95-10",  baseMark: "ААБл 3х95",  mult: 1, pipe: "110", weight: 3.312, mdm: "30811", fgis: "21.1.07.02-0096", fgisName: "Кабель силовой с алюминиевыми жилами ААБл 3х95(ож)-10000" },
+    { id: "aabl_3x70",  vGroup: "6_10", label: "ААБл 3х70-10",  baseMark: "ААБл 3х70",  mult: 1, pipe: "110", weight: 2.897, mdm: "11384", fgis: "21.1.07.02-0095", fgisName: "Кабель силовой с алюминиевыми жилами ААБл 3х70-10000" },
+    { id: "aabl_3x50",  vGroup: "6_10", label: "ААБл 3х50-10",  baseMark: "ААБл 3х50",  mult: 1, pipe: "110", weight: 2.526, mdm: "37560", fgis: "21.1.07.02-0094", fgisName: "Кабель силовой с алюминиевыми жилами ААБл 3х50(ож)-10000" },
 
-    // 6/10 кВ — ААБл (3-жильный от 16 до 240 мм²)
-    { id: "aabl_3x16",   vGroup: "6_10", label: "ААБл 3х16 (3-жильный, 16 мм²)",   baseMark: "ААБл 3х16",   mult: 1, pipe: "110", weight: 1.450, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "aabl_3x25",   vGroup: "6_10", label: "ААБл 3х25 (3-жильный, 25 мм²)",   baseMark: "ААБл 3х25",   mult: 1, pipe: "110", weight: 1.750, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "aabl_3x35",   vGroup: "6_10", label: "ААБл 3х35 (3-жильный, 35 мм²)",   baseMark: "ААБл 3х35",   mult: 1, pipe: "110", weight: 2.080, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "aabl_3x50",   vGroup: "6_10", label: "ААБл 3х50 (3-жильный, 50 мм²)",   baseMark: "ААБл 3х50",   mult: 1, pipe: "110", weight: 2.520, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "aabl_3x70",   vGroup: "6_10", label: "ААБл 3х70 (3-жильный, 70 мм²)",   baseMark: "ААБл 3х70",   mult: 1, pipe: "110", weight: 3.120, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "aabl_3x95",   vGroup: "6_10", label: "ААБл 3х95 (3-жильный, 95 мм²)",   baseMark: "ААБл 3х95",   mult: 1, pipe: "110", weight: 3.850, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "aabl_3x120",  vGroup: "6_10", label: "ААБл 3х120 (3-жильный, 120 мм²)", baseMark: "ААБл 3х120",  mult: 1, pipe: "110", weight: 4.520, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "aabl_3x150",  vGroup: "6_10", label: "ААБл 3х150 (3-жильный, 150 мм²)", baseMark: "ААБл 3х150",  mult: 1, pipe: "110", weight: 5.280, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "aabl_3x185",  vGroup: "6_10", label: "ААБл 3х185 (3-жильный, 185 мм²)", baseMark: "ААБл 3х185",  mult: 1, pipe: "160", weight: 6.190, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "aabl_3x240",  vGroup: "6_10", label: "ААБл 3х240 (3-жильный, 240 мм²)", baseMark: "ААБл 3х240",  mult: 1, pipe: "160", weight: 7.560, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    // Кабель сшитый полиэтилен на 6(10) кВ (в 3 одножильных кабеля)
+    { id: "apvpg_1x500",   vGroup: "6_10", label: "3хАПвПг 1х500/120А-10 (3 кабеля)",     baseMark: "АПвПг 1х500/120А",     mult: 3, pipe: "225", weight: 3.600, mdm: "37430", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "apvpg_1x240",   vGroup: "6_10", label: "3хАПвПг 1х240мк/120Ас-10 (3 кабеля)",  baseMark: "АПвПг 1х240мк/120Ас",  mult: 3, pipe: "160", weight: 1.963, mdm: "96458", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "apvpug_1x185",  vGroup: "6_10", label: "3хАПвПу2г 1х185/120Aс-10 (3 кабеля)", baseMark: "АПвПу2г 1х185/120Aс", mult: 3, pipe: "160", weight: 1.789, mdm: "96677", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "apvpug_1x150",  vGroup: "6_10", label: "3хАПвПу2г 1х150/95-10 (3 кабеля)",    baseMark: "АПвПу2г 1х150/95",    mult: 3, pipe: "160", weight: 1.852, mdm: "54079", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "apvpug_1x120",  vGroup: "6_10", label: "3хАПвПу2г 1х120/50-10 (3 кабеля)",    baseMark: "АПвПу2г 1х120/50",    mult: 3, pipe: "160", weight: 1.331, mdm: "68512", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "apvpg_1x95",    vGroup: "6_10", label: "3хАПвПг 1х95мк/50Aс-10 (3 кабеля)",    baseMark: "АПвПг 1х95мк/50Aс",    mult: 3, pipe: "160", weight: 1.101, mdm: "96480", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "apvpg_1x70",    vGroup: "6_10", label: "3хАПвПг 1х70/50Ас-10 (3 кабеля)",      baseMark: "АПвПг 1х70/50Ас",      mult: 3, pipe: "160", weight: 0.995, mdm: "96666", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "apvpg_1x50",    vGroup: "6_10", label: "3хАПвПг 1х50/50Ас-10 (3 кабеля)",      baseMark: "АПвПг 1х50/50Ас",      mult: 3, pipe: "160", weight: 0.877, mdm: "96664", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
 
-    // 6/10 кВ — АПвПг (1-жильный СПЭ, в 3 кабеля, от 16 до 500 мм²)
-    { id: "apvpg_1x16",  vGroup: "6_10", label: "3хАПвПг 1х16 (1-жильный СПЭ, 3 кабеля)",  baseMark: "АПвПг 1х16",  mult: 3, pipe: "160", weight: 0.450, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "apvpg_1x25",  vGroup: "6_10", label: "3хАПвПг 1х25 (1-жильный СПЭ, 3 кабеля)",  baseMark: "АПвПг 1х25",  mult: 3, pipe: "160", weight: 0.520, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "apvpg_1x35",  vGroup: "6_10", label: "3хАПвПг 1х35 (1-жильный СПЭ, 3 кабеля)",  baseMark: "АПвПг 1х35",  mult: 3, pipe: "160", weight: 0.610, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "apvpg_1x50",  vGroup: "6_10", label: "3хАПвПг 1х50 (1-жильный СПЭ, 3 кабеля)",  baseMark: "АПвПг 1х50",  mult: 3, pipe: "160", weight: 0.720, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "apvpg_1x70",  vGroup: "6_10", label: "3хАПвПг 1х70 (1-жильный СПЭ, 3 кабеля)",  baseMark: "АПвПг 1х70",  mult: 3, pipe: "160", weight: 0.860, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "apvpg_1x95",  vGroup: "6_10", label: "3хАПвПг 1х95 (1-жильный СПЭ, 3 кабеля)",  baseMark: "АПвПг 1х95",  mult: 3, pipe: "160", weight: 1.030, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "apvpg_1x120", vGroup: "6_10", label: "3хАПвПг 1х120 (1-жильный СПЭ, 3 кабеля)", baseMark: "АПвПг 1х120", mult: 3, pipe: "160", weight: 1.210, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "apvpg_1x150", vGroup: "6_10", label: "3хАПвПг 1х150 (1-жильный СПЭ, 3 кабеля)", baseMark: "АПвПг 1х150", mult: 3, pipe: "160", weight: 1.420, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "apvpg_1x185", vGroup: "6_10", label: "3хАПвПг 1х185 (1-жильный СПЭ, 3 кабеля)", baseMark: "АПвПг 1х185", mult: 3, pipe: "160", weight: 1.680, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "apvpg_1x240", vGroup: "6_10", label: "3хАПвПг 1х240 (1-жильный СПЭ, 3 кабеля)", baseMark: "АПвПг 1х240", mult: 3, pipe: "160", weight: 2.050, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "apvpg_1x300", vGroup: "6_10", label: "3хАПвПг 1х300 (1-жильный СПЭ, 3 кабеля)", baseMark: "АПвПг 1х300", mult: 3, pipe: "225", weight: 2.480, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "apvpg_1x400", vGroup: "6_10", label: "3хАПвПг 1х400 (1-жильный СПЭ, 3 кабеля)", baseMark: "АПвПг 1х400", mult: 3, pipe: "225", weight: 3.120, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
-    { id: "apvpg_1x500", vGroup: "6_10", label: "3хАПвПг 1х500 (1-жильный СПЭ, 3 кабеля)", baseMark: "АПвПг 1х500", mult: 3, pipe: "225", weight: 3.850, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" }
+    // Кабель на 0,4 кВ
+    { id: "avbbshv_4x240", vGroup: "0.4", label: "АВБбШв 4х240-1", baseMark: "АВБбШв 4х240", mult: 1, pipe: "160", weight: 4.917, mdm: "11399", fgis: "21.1.06.08-0186", fgisName: "Кабель силовой с алюминиевыми жилами АВБШв 4х240мс(N)-1000" },
+    { id: "avbbshv_4x185", vGroup: "0.4", label: "АВБбШв 4х185-1", baseMark: "АВБбШв 4х185", mult: 1, pipe: "160", weight: 3.889, mdm: "11398", fgis: "21.1.06.08-0185", fgisName: "Кабель силовой с алюминиевыми жилами АВБШв 4х185мс(N)-1000" },
+    { id: "avbbshv_4x150", vGroup: "0.4", label: "АВБбШв 4х150-1", baseMark: "АВБбШв 4х150", mult: 1, pipe: "110", weight: 3.309, mdm: "11397", fgis: "21.1.06.08-0184", fgisName: "Кабель силовой с алюминиевыми жилами АВБШв 4х150мс(N)-1000" },
+    { id: "avbbshv_4x120", vGroup: "0.4", label: "АВБбШв 4х120-1", baseMark: "АВБбШв 4х120", mult: 1, pipe: "110", weight: 2.804, mdm: "11396", fgis: "21.1.06.08-0183", fgisName: "Кабель силовой с алюминиевыми жилами АВБШв 4х120мс(N)-1000" },
+    { id: "avbbshv_4x95",  vGroup: "0.4", label: "АВБбШв 4х95-1",  baseMark: "АВБбШв 4х95",  mult: 1, pipe: "110", weight: 2.402, mdm: "11401", fgis: "21.1.06.08-0182", fgisName: "Кабель силовой с алюминиевыми жилами АВБШв 4х95мс(N)-1000" },
+    { id: "avbbshv_4x70",  vGroup: "0.4", label: "АВБбШв 4х70-1",  baseMark: "АВБбШв 4х70",  mult: 1, pipe: "110", weight: 1.938, mdm: "11400", fgis: "21.1.06.08-0181", fgisName: "Кабель силовой с алюминиевыми жилами АВБШв 4х70мс(N)-1000" },
+    { id: "avbbshv_4x50",  vGroup: "0.4", label: "АВБбШв 4х50-1",  baseMark: "АВБбШв 4х50",  mult: 1, pipe: "110", weight: 1.712, mdm: "35422", fgis: "21.1.06.08-1610", fgisName: "Кабель силовой с алюминиевыми жилами АВБШв 4х50ок(N)-1000" },
+    { id: "avbbshv_4x35",  vGroup: "0.4", label: "АВБбШв 4х35-1",  baseMark: "АВБбШв 4х35",  mult: 1, pipe: "63",  weight: 1.324, mdm: "38466", fgis: "21.1.06.08-1608", fgisName: "Кабель силовой с алюминиевыми жилами АВБШв 4х35ок(N)-1000" },
+    { id: "avbbshv_4x25",  vGroup: "0.4", label: "АВБбШв 4х25-1",  baseMark: "АВБбШв 4х25",  mult: 1, pipe: "63",  weight: 0.986, mdm: "32734", fgis: "21.1.06.08-1606", fgisName: "Кабель силовой с алюминиевыми жилами АВБШв 4х25ок(N)-1000" },
+    { id: "avbbshv_4x16",  vGroup: "0.4", label: "АВБбШв 4х16-1",  baseMark: "АВБбШв 4х16",  mult: 1, pipe: "63",  weight: 0.721, mdm: "40367", fgis: "21.1.06.08-1604", fgisName: "Кабель силовой с алюминиевыми жилами АВБШв 4х16ок(N)-1000" }
   ];
 
   // Справочник труб из шаблона 14.24 PRO_ПОНТ
@@ -593,7 +585,7 @@
       type: "VIS Universal",
       mdm: "92284",
       unit: "шт",
-      kgPerM3Bore: 0.8, // 40% от 2 кг/м³ канала
+      kgPerM3Bore: 0.8,
       packKg: 25,
       mass: 25,
       fgisName: "Добавка порошкообразная на основе ксантановой камеди",
@@ -607,7 +599,7 @@
       type: "New-drill plus 25 кг",
       mdm: "89482",
       unit: "шт",
-      kgPerM3Bore: 0.4, // 20% от 2 кг/м³ канала
+      kgPerM3Bore: 0.4,
       packKg: 25,
       mass: 25,
       fgisName: "ОТСУТСТВУЕТ",
@@ -621,7 +613,7 @@
       type: "Terra Raid 25 кг",
       mdm: "89486",
       unit: "шт",
-      kgPerM3Bore: 0.8, // 40% от 2 кг/м³ канала
+      kgPerM3Bore: 0.8,
       packKg: 25,
       mass: 25,
       fgisName: "ОТСУТСТВУЕТ",
@@ -693,7 +685,7 @@
     return 0;
   }
 
-  const STORAGE_KEY = "gnb_pont_app_final_v2";
+  const STORAGE_KEY = "gnb_pont_app_final_v3";
 
   let state = {
     lineName: "!!!Название линии!!!",
@@ -725,8 +717,9 @@
 
     const sel = document.getElementById("cablePreset");
     sel.innerHTML = filtered.map(c => {
-      const vSuffix = vLevel === "0.4" ? "" : `-${vLevel}`;
-      const displayLabel = c.label.replace(c.baseMark, `${c.baseMark}${vSuffix}`);
+      const displayLabel = vLevel === "6"
+        ? c.label.replace("-10", "-6")
+        : c.label;
       return `<option value="${c.id}">${displayLabel} → труба ${c.pipe} мм</option>`;
     }).join("");
 
@@ -874,7 +867,7 @@
     state = {
       lineName: "!!!Название линии!!!",
       voltageLevel: "10",
-      cablePresetId: "apvpg_1x150",
+      cablePresetId: "apvpug_1x150",
       defaultPipe: "160",
       drills: [
         { id: 1, title: "Прокол №1 (50-99м, тип 2)", lengthStr: "86", pipesCount: 2, pits: 2, pipeDia: "160" }
@@ -887,7 +880,7 @@
     saveState();
     renderDrillsTable();
     renderOutputs();
-    showToast("Загружен пример 2: 86 м, 2 трубы d160 (бентонит 46,732 шт, вода 185760 л)");
+    showToast("Загружен пример 2: 86 м, АПвПу2г 1х150/95-10, 2 трубы d160 (бентонит 46,732 шт, вода 185760 л)");
   }
 
   function resetData() {
@@ -1048,7 +1041,7 @@
       <div class="kpi-item">Вода: <strong>${fmt(calc.totalWaterLiters, 0)} л</strong> (${fmt(calc.totalWaterLiters / 1000, 3)} м³)</div>
     `;
 
-    // --- ВОР (без столбца "печать") ---
+    // --- ВОР ---
     const vorRows = [];
     let itemIdx = 1;
 
@@ -1151,7 +1144,7 @@
 
     document.getElementById("vorBody").innerHTML = vorRows.join("");
 
-    // --- Спецификация (без столбца "Печать") ---
+    // --- Спецификация ---
     const specRows = [];
     let sPos = 1;
 
