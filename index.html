@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ГНБ-Проект: ВОР и Спецификация КЛ 0,4–10 кВ (ПОНТ)</title>
+  <style>
+    :root {
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --border: #cbd5e1;
+      --border-dark: #94a3b8;
+      --text: #0f172a;
+      --muted: #475569;
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --accent-soft: #eff6ff;
+      --excel-head: #e2e8f0;
+      --excel-sec: #dbeafe;
+      --danger: #dc2626;
+      --success: #15803d;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    header {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 10px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 2px solid var(--primary);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+    header .sub {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    button {
+      cursor: pointer;
+      border: 1px solid var(--border-dark);
+      background: #fff;
+      color: var(--text);
+      padding: 6px 11px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 500;
+      transition: 0.15s;
+    }
+    button:hover { background: #f8fafc; }
+    button.primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    button.primary:hover { background: var(--primary-hover); }
+    button.success {
+      background: var(--success);
+      border-color: var(--success);
+      color: #fff;
+    }
+    button.success:hover { opacity: 0.92; }
+    button.danger {
+      color: var(--danger);
+      border-color: #fca5a5;
+      padding: 3px 7px;
+    }
+    button.danger:hover { background: #fef2f2; }
+
+    .container {
+      max-width: 1860px;
+      margin: 0 auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin: 0 0 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: #1e293b;
+    }
+
+    .grid-params {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .field label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    input[type="text"], input[type="number"], select {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid var(--border-dark);
+      border-radius: 4px;
+      font-size: 12.5px;
+      background: #fff;
+      color: var(--text);
+    }
+    input:focus, select:focus {
+      outline: 2px solid #93c5fd;
+      border-color: var(--primary);
+    }
+
+    .kpi-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      background: var(--accent-soft);
+      border: 1px solid #bfdbfe;
+      padding: 8px 12px;
+      border-radius: 5px;
+      margin-top: 10px;
+      font-size: 12px;
+    }
+    .kpi-item strong { color: var(--primary); }
+
+    .input-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .input-table th, .input-table td {
+      border: 1px solid var(--border);
+      padding: 5px 7px;
+      text-align: left;
+    }
+    .input-table th {
+      background: #f8fafc;
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    .split-output {
+      display: grid;
+      grid-template-columns: 1fr 1.45fr;
+      gap: 12px;
+      align-items: start;
+    }
+    @media (max-width: 1280px) {
+      .split-output { grid-template-columns: 1fr; }
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border-dark);
+    }
+    table.excel {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+      background: #fff;
+    }
+    table.excel th, table.excel td {
+      border: 1px solid #94a3b8;
+      padding: 4px 6px;
+      vertical-align: middle;
+    }
+    table.excel thead th {
+      background: var(--excel-head);
+      font-weight: 700;
+      text-align: center;
+      color: #0f172a;
+    }
+    table.excel tr.num-row th {
+      background: #f1f5f9;
+      font-weight: 600;
+      font-size: 10.5px;
+      color: #475569;
+    }
+    table.excel tr.title-row td {
+      background: #f8fafc;
+      font-weight: 700;
+      text-align: center;
+    }
+    table.excel tr.section-row td {
+      background: var(--excel-sec);
+      font-weight: 700;
+      text-align: center;
+    }
+    table.excel tr.zero-row {
+      color: #94a3b8;
+    }
+    .tc { text-align: center; }
+    .tr { text-align: right; font-variant-numeric: tabular-nums; }
+    .nw { white-space: nowrap; }
+    .badge-calc {
+      display: inline-block;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #334155;
+      white-space: nowrap;
+    }
+
+    .checkbox-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 400;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      background: #0f172a;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 5px;
+      font-size: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      z-index: 999;
+    }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>ГНБ-Проект: ВОР и Спецификация КЛ 0,4–10 кВ</h1>
+    <div class="sub">Шаблон 14.24 PRO_ПОНТ • Расчёт раствора по Dбур.канала и воды по Dэкв пакета труб</div>
+  </div>
+  <div class="toolbar">
+    <button onclick="loadExample()">Пример 1 (АВБбШв 4х16, 1 м)</button>
+    <button onclick="loadExample86()">Пример 2 (86 м, ГНБ тип 2, d160)</button>
+    <button onclick="resetData()">Очистить</button>
+    <button class="success" onclick="exportExcel()">Скачать Excel (.xls)</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- 1. Параметры кабельной линии -->
+  <div class="card">
+    <div class="card-title">
+      <span>1. Исходные данные кабельной линии (выбираются 1 раз на весь объект)</span>
+      <label class="checkbox-label">
+        <input type="checkbox" id="showZeroRows" onchange="renderOutputs()" />
+        Показывать нулевые строки (как в шаблоне Excel)
+      </label>
+    </div>
+
+    <div class="grid-params">
+      <div class="field" style="grid-column: span 2;">
+        <label>Наименование линии (для заголовка ВОР и Спецификации)</label>
+        <input type="text" id="lineName" value="!!!Название линии!!!" oninput="saveAndRenderOutputs()" />
+      </div>
+
+      <div class="field">
+        <label>Уровень напряжения</label>
+        <select id="voltageLevel" onchange="onVoltageChange()">
+          <option value="0.4">0,4 кВ (1 кВ)</option>
+          <option value="6">6 кВ</option>
+          <option value="10">10 кВ</option>
+        </select>
+      </div>
+
+      <div class="field" style="grid-column: span 2;">
+        <label>Марка и сечение кабеля (фильтруется по напряжению)</label>
+        <select id="cablePreset" onchange="onCablePresetChange()"></select>
+      </div>
+
+      <div class="field">
+        <label>Труба ПНД по таблице (можно переопределить)</label>
+        <select id="defaultPipe" onchange="applyDefaultPipeToAll()">
+          <option value="63">Труба 63x4,7 SN32 F2 (УКПТ-75/20)</option>
+          <option value="110">Труба 110x8,1 SN32 F2 (УКПТ-130/28)</option>
+          <option value="160">Труба 160x11,8 SN32 F2 (УКПТ-175/55)</option>
+          <option value="225">Труба 225x16,6 SN32 F2 (УКПТ-265/75)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="kpi-bar" id="kpiBar"></div>
+  </div>
+
+  <!-- 2. Участки (проколы) ГНБ -->
+  <div class="card">
+    <div class="card-title">
+      <span>2. Участки прокладки методом ГНБ</span>
+      <button class="primary" onclick="addRow()">+ Добавить прокол ГНБ</button>
+    </div>
+
+    <div class="table-wrap" style="border: none;">
+      <table class="input-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">№</th>
+            <th>Примечание / номер прокола</th>
+            <th style="width: 140px;">Длина ГНБ, м (ручной ввод)</th>
+            <th style="width: 220px;">Тип ГНБ (труб в скважине)</th>
+            <th style="width: 120px;">Кол-во приямков, шт</th>
+            <th style="width: 235px;">Диаметр трубы ПНД (SN32 F2)</th>
+            <th style="width: 235px;">Расчёт канала (Dэкв / Dбур / Vкан)</th>
+            <th style="width: 46px;"></th>
+          </tr>
+        </thead>
+        <tbody id="drillsBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 3. Вывод ВОР и Спецификации на одном экране -->
+  <div class="split-output">
+
+    <!-- ВОР -->
+    <div class="card">
+      <div class="card-title">
+        <span>Ведомость объемов работ (ВОР)</span>
+        <button onclick="copyTable('vorTable', 'ВОР скопирована в буфер обмена')">Копировать ВОР</button>
+      </div>
+      <div class="table-wrap">
+        <table class="excel" id="vorTable">
+          <thead>
+            <tr>
+              <th style="width: 44px;">печать</th>
+              <th style="width: 44px;">№ п/п</th>
+              <th>Наименование</th>
+              <th style="width: 65px;">Ед. измер.</th>
+              <th style="width: 80px;">Количество</th>
+              <th style="width: 90px;">Примечание</th>
+            </tr>
+          </thead>
+          <tbody id="vorBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Спецификация -->
+    <div class="card">
+      <div class="card-title">
+        <span>Спецификация оборудования, изделий и материалов</span>
+        <button onclick="copyTable('specTable', 'Спецификация скопирована в буфер обмена')">Копировать Спецификацию</button>
+      </div>
+      <div class="table-wrap">
+        <table class="excel" id="specTable">
+          <thead>
+            <tr>
+              <th>Печать</th>
+              <th>Поз.</th>
+              <th>Наименование и техническая характеристика</th>
+              <th>Тип, марка, обозначение документа, опросного листа</th>
+              <th>Код МДМ</th>
+              <th>Завод-изготовитель / Поставщик</th>
+              <th>Ед. измерения</th>
+              <th>Количество</th>
+              <th>Масса 1 ед., кг</th>
+              <th>Наименование кода заказа</th>
+              <th>Код ресурса / ФГИС ЦС</th>
+              <th>Ед. измерения</th>
+              <th>Коэф. перехода</th>
+              <th>Кол-во с коэф.</th>
+              <th>Примечание</th>
+            </tr>
+            <tr class="num-row">
+              <th></th>
+              <th>1</th>
+              <th>2</th>
+              <th>3</th>
+              <th>4</th>
+              <th>5</th>
+              <th>6</th>
+              <th>7</th>
+              <th>8</th>
+              <th>9</th>
+              <th>10</th>
+              <th>11</th>
+              <th>12</th>
+              <th>13</th>
+              <th>14</th>
+            </tr>
+          </thead>
+          <tbody id="specBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const PI_EXCEL = 3.14;
+
+  // База кабелей по таблицам выбора труб 0,4 кВ и 6/10 кВ
+  const CABLE_CATALOG = [
+    // 0,4 кВ — АВБбШв-1 (4-жильный от 16 до 240 мм²)
+    { id: "avbbshv_4x16",  vGroup: "0.4", label: "АВБбШв 4х16-1 (4-жильный, 16 мм²)",   baseMark: "АВБбШв 4х16",   mult: 1, pipe: "63",  weight: 0.721, mdm: "40367", fgis: "21.1.06.08-1604", fgisName: "Кабель силовой с алюминиевыми жилами АВБбШв 4х16-1" },
+    { id: "avbbshv_4x25",  vGroup: "0.4", label: "АВБбШв 4х25-1 (4-жильный, 25 мм²)",   baseMark: "АВБбШв 4х25",   mult: 1, pipe: "63",  weight: 0.960, mdm: "40368", fgis: "21.1.06.08-1605", fgisName: "Кабель силовой с алюминиевыми жилами" },
+    { id: "avbbshv_4x35",  vGroup: "0.4", label: "АВБбШв 4х35-1 (4-жильный, 35 мм²)",   baseMark: "АВБбШв 4х35",   mult: 1, pipe: "63",  weight: 1.190, mdm: "40369", fgis: "21.1.06.08-1606", fgisName: "Кабель силовой с алюминиевыми жилами" },
+    { id: "avbbshv_4x50",  vGroup: "0.4", label: "АВБбШв 4х50-1 (4-жильный, 50 мм²)",   baseMark: "АВБбШв 4х50",   mult: 1, pipe: "110", weight: 1.540, mdm: "40370", fgis: "21.1.06.08-1607", fgisName: "Кабель силовой с алюминиевыми жилами" },
+    { id: "avbbshv_4x70",  vGroup: "0.4", label: "АВБбШв 4х70-1 (4-жильный, 70 мм²)",   baseMark: "АВБбШв 4х70",   mult: 1, pipe: "110", weight: 2.020, mdm: "40371", fgis: "21.1.06.08-1608", fgisName: "Кабель силовой с алюминиевыми жилами" },
+    { id: "avbbshv_4x95",  vGroup: "0.4", label: "АВБбШв 4х95-1 (4-жильный, 95 мм²)",   baseMark: "АВБбШв 4х95",   mult: 1, pipe: "110", weight: 2.610, mdm: "40372", fgis: "21.1.06.08-1609", fgisName: "Кабель силовой с алюминиевыми жилами" },
+    { id: "avbbshv_4x120", vGroup: "0.4", label: "АВБбШв 4х120-1 (4-жильный, 120 мм²)", baseMark: "АВБбШв 4х120",  mult: 1, pipe: "110", weight: 3.150, mdm: "40373", fgis: "21.1.06.08-1610", fgisName: "Кабель силовой с алюминиевыми жилами" },
+    { id: "avbbshv_4x150", vGroup: "0.4", label: "АВБбШв 4х150-1 (4-жильный, 150 мм²)", baseMark: "АВБбШв 4х150",  mult: 1, pipe: "110", weight: 3.820, mdm: "40374", fgis: "21.1.06.08-1611", fgisName: "Кабель силовой с алюминиевыми жилами" },
+    { id: "avbbshv_4x185", vGroup: "0.4", label: "АВБбШв 4х185-1 (4-жильный, 185 мм²)", baseMark: "АВБбШв 4х185",  mult: 1, pipe: "160", weight: 4.650, mdm: "40375", fgis: "21.1.06.08-1612", fgisName: "Кабель силовой с алюминиевыми жилами" },
+    { id: "avbbshv_4x240", vGroup: "0.4", label: "АВБбШв 4х240-1 (4-жильный, 240 мм²)", baseMark: "АВБбШв 4х240",  mult: 1, pipe: "160", weight: 5.910, mdm: "40376", fgis: "21.1.06.08-1613", fgisName: "Кабель силовой с алюминиевыми жилами" },
+
+    // 6/10 кВ — ААБл (3-жильный от 16 до 240 мм²)
+    { id: "aabl_3x16",   vGroup: "6_10", label: "ААБл 3х16 (3-жильный, 16 мм²)",   baseMark: "ААБл 3х16",   mult: 1, pipe: "110", weight: 1.450, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "aabl_3x25",   vGroup: "6_10", label: "ААБл 3х25 (3-жильный, 25 мм²)",   baseMark: "ААБл 3х25",   mult: 1, pipe: "110", weight: 1.750, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "aabl_3x35",   vGroup: "6_10", label: "ААБл 3х35 (3-жильный, 35 мм²)",   baseMark: "ААБл 3х35",   mult: 1, pipe: "110", weight: 2.080, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "aabl_3x50",   vGroup: "6_10", label: "ААБл 3х50 (3-жильный, 50 мм²)",   baseMark: "ААБл 3х50",   mult: 1, pipe: "110", weight: 2.520, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "aabl_3x70",   vGroup: "6_10", label: "ААБл 3х70 (3-жильный, 70 мм²)",   baseMark: "ААБл 3х70",   mult: 1, pipe: "110", weight: 3.120, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "aabl_3x95",   vGroup: "6_10", label: "ААБл 3х95 (3-жильный, 95 мм²)",   baseMark: "ААБл 3х95",   mult: 1, pipe: "110", weight: 3.850, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "aabl_3x120",  vGroup: "6_10", label: "ААБл 3х120 (3-жильный, 120 мм²)", baseMark: "ААБл 3х120",  mult: 1, pipe: "110", weight: 4.520, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "aabl_3x150",  vGroup: "6_10", label: "ААБл 3х150 (3-жильный, 150 мм²)", baseMark: "ААБл 3х150",  mult: 1, pipe: "110", weight: 5.280, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "aabl_3x185",  vGroup: "6_10", label: "ААБл 3х185 (3-жильный, 185 мм²)", baseMark: "ААБл 3х185",  mult: 1, pipe: "160", weight: 6.190, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "aabl_3x240",  vGroup: "6_10", label: "ААБл 3х240 (3-жильный, 240 мм²)", baseMark: "ААБл 3х240",  mult: 1, pipe: "160", weight: 7.560, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+
+    // 6/10 кВ — АПвПг (1-жильный СПЭ, в 3 кабеля, от 16 до 500 мм²)
+    { id: "apvpg_1x16",  vGroup: "6_10", label: "3хАПвПг 1х16 (1-жильный СПЭ, 3 кабеля)",  baseMark: "АПвПг 1х16",  mult: 3, pipe: "160", weight: 0.450, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "apvpg_1x25",  vGroup: "6_10", label: "3хАПвПг 1х25 (1-жильный СПЭ, 3 кабеля)",  baseMark: "АПвПг 1х25",  mult: 3, pipe: "160", weight: 0.520, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "apvpg_1x35",  vGroup: "6_10", label: "3хАПвПг 1х35 (1-жильный СПЭ, 3 кабеля)",  baseMark: "АПвПг 1х35",  mult: 3, pipe: "160", weight: 0.610, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "apvpg_1x50",  vGroup: "6_10", label: "3хАПвПг 1х50 (1-жильный СПЭ, 3 кабеля)",  baseMark: "АПвПг 1х50",  mult: 3, pipe: "160", weight: 0.720, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "apvpg_1x70",  vGroup: "6_10", label: "3хАПвПг 1х70 (1-жильный СПЭ, 3 кабеля)",  baseMark: "АПвПг 1х70",  mult: 3, pipe: "160", weight: 0.860, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "apvpg_1x95",  vGroup: "6_10", label: "3хАПвПг 1х95 (1-жильный СПЭ, 3 кабеля)",  baseMark: "АПвПг 1х95",  mult: 3, pipe: "160", weight: 1.030, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "apvpg_1x120", vGroup: "6_10", label: "3хАПвПг 1х120 (1-жильный СПЭ, 3 кабеля)", baseMark: "АПвПг 1х120", mult: 3, pipe: "160", weight: 1.210, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "apvpg_1x150", vGroup: "6_10", label: "3хАПвПг 1х150 (1-жильный СПЭ, 3 кабеля)", baseMark: "АПвПг 1х150", mult: 3, pipe: "160", weight: 1.420, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "apvpg_1x185", vGroup: "6_10", label: "3хАПвПг 1х185 (1-жильный СПЭ, 3 кабеля)", baseMark: "АПвПг 1х185", mult: 3, pipe: "160", weight: 1.680, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "apvpg_1x240", vGroup: "6_10", label: "3хАПвПг 1х240 (1-жильный СПЭ, 3 кабеля)", baseMark: "АПвПг 1х240", mult: 3, pipe: "160", weight: 2.050, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "apvpg_1x300", vGroup: "6_10", label: "3хАПвПг 1х300 (1-жильный СПЭ, 3 кабеля)", baseMark: "АПвПг 1х300", mult: 3, pipe: "225", weight: 2.480, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "apvpg_1x400", vGroup: "6_10", label: "3хАПвПг 1х400 (1-жильный СПЭ, 3 кабеля)", baseMark: "АПвПг 1х400", mult: 3, pipe: "225", weight: 3.120, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" },
+    { id: "apvpg_1x500", vGroup: "6_10", label: "3хАПвПг 1х500 (1-жильный СПЭ, 3 кабеля)", baseMark: "АПвПг 1х500", mult: 3, pipe: "225", weight: 3.850, mdm: "", fgis: "ОТСУТСТВУЕТ", fgisName: "ОТСУТСТВУЕТ" }
+  ];
+
+  // Справочник труб из шаблона 14.24 PRO_ПОНТ
+  const PIPES_DB = {
+    "63": {
+      diaMm: 63,
+      diaM: 0.063,
+      name: "Труба полиэтиленовая-II 63x4,7 SN32 F2",
+      doc: "ГОСТ Р МЭК 61386.24-2014 Электропайп",
+      mdm: "96606",
+      mass: 0.869,
+      fgisName: "ОТСУТСТВУЕТ",
+      fgisCode: "ОТСУТСТВУЕТ",
+      fgisUnit: "-",
+      coef: "-"
+    },
+    "110": {
+      diaMm: 110,
+      diaM: 0.110,
+      name: "Труба полиэтиленовая-II 110x8,1 SN32 F2",
+      doc: "ГОСТ Р МЭК 61386.24-2014 Электропайп",
+      mdm: "75530",
+      mass: 2.78,
+      fgisName: "Трубы модульные безнапорные полиэтиленовые",
+      fgisCode: "24.3.03.17-0015",
+      fgisUnit: "м",
+      coef: 1
+    },
+    "160": {
+      diaMm: 160,
+      diaM: 0.160,
+      name: "Труба полиэтиленовая-II 160x11,8 SN32 F2",
+      doc: "ГОСТ Р МЭК 61386.24-2014 Электропайп",
+      mdm: "75969",
+      mass: 5.74,
+      fgisName: "ОТСУТСТВУЕТ",
+      fgisCode: "ОТСУТСТВУЕТ",
+      fgisUnit: "-",
+      coef: "-"
+    },
+    "225": {
+      diaMm: 225,
+      diaM: 0.225,
+      name: "Труба полиэтиленовая-II 225x16,6 SN32 F2",
+      doc: "ГОСТ Р МЭК 61386.24-2014 Электропайп",
+      mdm: "75971",
+      mass: 8.94,
+      fgisName: "ОТСУТСТВУЕТ",
+      fgisCode: "ОТСУТСТВУЕТ",
+      fgisUnit: "-",
+      coef: "-"
+    }
+  };
+
+  // Справочник УКПТ из шаблона 14.24 PRO_ПОНТ
+  const UKPT_DB = {
+    "63": {
+      type: "УКПТ-75/20",
+      mdm: "39413",
+      mass: 0.164,
+      fgisName: "Манжета резиновая для герметизации кабельных проходов",
+      fgisCode: "01.7.19.03-1013",
+      fgisUnit: "шт",
+      coef: 1
+    },
+    "110": {
+      type: "УКПТ-130/28",
+      mdm: "32816",
+      mass: 0.55,
+      fgisName: "Уплотнитель кабельных проходов термоусаживаемый",
+      fgisCode: "20.2.09.02-1033",
+      fgisUnit: "шт",
+      coef: 1
+    },
+    "160": {
+      type: "УКПТ-175/55",
+      mdm: "30109",
+      mass: 0.8,
+      fgisName: "Манжета резиновая для герметизации кабельных проходов",
+      fgisCode: "01.7.19.03-1054",
+      fgisUnit: "шт",
+      coef: 1
+    },
+    "225": {
+      type: "УКПТ-265/75",
+      mdm: "85660",
+      mass: 0.9,
+      fgisName: "ОТСУТСТВУЕТ",
+      fgisCode: "ОТСУТСТВУЕТ",
+      fgisUnit: "-",
+      coef: "-"
+    }
+  };
+
+  // Расходные материалы бурового раствора из шаблона ПОНТ:
+  // Бентонит: 25 кг/м³ раствора (100 кг/м³ канала)
+  // Полимеры (всего 0,5 кг/м³ раствора = 2 кг/м³ канала): Ксантан 40% (0,8 кг/м³ кан.), PHPA 20% (0,4 кг/м³ кан.), PAC 40% (0,8 кг/м³ кан.)
+  // Сода кальцинированная: 0,4 кг/м³ раствора (1,6 кг/м³ канала)
+  const DRILL_MATERIALS = [
+    {
+      name: "Бентонит, 25 кг",
+      type: "UNI-GEL Universal",
+      mdm: "51600",
+      unit: "шт",
+      kgPerM3Bore: 100.0,
+      packKg: 25,
+      mass: 25,
+      fgisName: "Порошок (глинопорошок) бентонитовый напольный",
+      fgisCode: "01.4.03.01-0022",
+      fgisUnit: "т",
+      coef: 40,
+      note: ""
+    },
+    {
+      name: "Полимер, 25 кг",
+      type: "VIS Universal",
+      mdm: "92284",
+      unit: "шт",
+      kgPerM3Bore: 0.8, // 40% от 2 кг/м³ канала
+      packKg: 25,
+      mass: 25,
+      fgisName: "Добавка порошкообразная на основе ксантановой камеди",
+      fgisCode: "01.4.03.03-0014",
+      fgisUnit: "т",
+      coef: 40,
+      note: "Ксантан"
+    },
+    {
+      name: "Полимер, 25 кг",
+      type: "New-drill plus 25 кг",
+      mdm: "89482",
+      unit: "шт",
+      kgPerM3Bore: 0.4, // 20% от 2 кг/м³ канала
+      packKg: 25,
+      mass: 25,
+      fgisName: "ОТСУТСТВУЕТ",
+      fgisCode: "ОТСУТСТВУЕТ",
+      fgisUnit: "-",
+      coef: "-",
+      note: "PHPA"
+    },
+    {
+      name: "Полимер, 25 кг",
+      type: "Terra Raid 25 кг",
+      mdm: "89486",
+      unit: "шт",
+      kgPerM3Bore: 0.8, // 40% от 2 кг/м³ канала
+      packKg: 25,
+      mass: 25,
+      fgisName: "ОТСУТСТВУЕТ",
+      fgisCode: "ОТСУТСТВУЕТ",
+      fgisUnit: "-",
+      coef: "-",
+      note: "PAC"
+    },
+    {
+      name: "Сода кальцинированная техническая, 25 кг",
+      type: "марка Б",
+      mdm: "45882",
+      unit: "шт",
+      kgPerM3Bore: 1.6,
+      packKg: 25,
+      mass: 25,
+      fgisName: "Сода кальцинированная (натрий углекислый)",
+      fgisCode: "01.3.05.23-0171",
+      fgisUnit: "т",
+      coef: 40,
+      note: ""
+    }
+  ];
+
+  // Коэффициент перевода в эквивалентный диаметр пакета кабельных труб (строка 13 листа 'П ГНБ')
+  function getBundleFactor(pipesCount) {
+    const bundleFactors = {
+      1: 1.0,
+      2: 2.0,
+      3: 2.15,
+      4: 2.41,
+      5: 2.7,
+      6: 3.0
+    };
+    return bundleFactors[pipesCount] || (1 + 0.5 * (pipesCount - 1));
+  }
+
+  // Эквивалентный диаметр пакета кабельных труб-оболочек, мм (строка 14 листа 'П ГНБ')
+  function calcEquivBundleDiaMm(pipeDiaStr, pipesCount) {
+    const dPipeMm = PIPES_DB[pipeDiaStr] ? PIPES_DB[pipeDiaStr].diaMm : 110;
+    const kBundle = getBundleFactor(pipesCount);
+    return Math.round(dPipeMm * kBundle * 100) / 100;
+  }
+
+  // Диаметр бурового канала Dбур (м) (строки 19–21 листа 'П ГНБ')
+  function calcBoreDiameter(pipeDiaStr, pipesCount, lengthM) {
+    const dEquivM = calcEquivBundleDiaMm(pipeDiaStr, pipesCount) / 1000;
+
+    let kLen = 1.2; // до 50 м
+    if (lengthM >= 300) {
+      kLen = 1.5;
+    } else if (lengthM >= 100) {
+      kLen = 1.4;   // от 100 м
+    } else if (lengthM >= 50) {
+      kLen = 1.3;   // до 99 м (50–99 м)
+    }
+
+    const dBore = Math.max(0.2, dEquivM * kLen);
+    return Math.round(dBore * 10000) / 10000;
+  }
+
+  // Расход воды технической по формуле Excel:
+  // ЕСЛИ(Dэкв=0;0;ЕСЛИ(Dэкв<=110;0,15;ЕСЛИ(Dэкв<=225;0,69;ЕСЛИ(Dэкв<=400;2,16;0)))) * 1000 л/м
+  function calcWaterRatePerM(dEquivMm) {
+    if (dEquivMm <= 0) return 0;
+    if (dEquivMm <= 110) return 150;
+    if (dEquivMm <= 225) return 690;
+    if (dEquivMm <= 400) return 2160;
+    return 0;
+  }
+
+  const STORAGE_KEY = "gnb_pont_app_final_v1";
+
+  let state = {
+    lineName: "!!!Название линии!!!",
+    voltageLevel: "0.4",
+    cablePresetId: "avbbshv_4x16",
+    defaultPipe: "63",
+    drills: [
+      { id: 1, title: "Прокол №1", lengthStr: "1", pipesCount: 1, pits: 2, pipeDia: "63" }
+    ]
+  };
+
+  function fmt(num, maxDec = 6) {
+    if (num === "-" || num === "" || num === null || num === undefined) return num;
+    const rounded = Math.round(num * Math.pow(10, maxDec)) / Math.pow(10, maxDec);
+    return String(rounded).replace(".", ",");
+  }
+
+  function parseLen(str) {
+    if (str === null || str === undefined) return 0;
+    const cleaned = String(str).trim().replace(",", ".");
+    const val = parseFloat(cleaned);
+    return isNaN(val) || val < 0 ? 0 : val;
+  }
+
+  function populateCableSelect(preserveId = null) {
+    const vLevel = document.getElementById("voltageLevel").value;
+    const targetGroup = vLevel === "0.4" ? "0.4" : "6_10";
+    const filtered = CABLE_CATALOG.filter(c => c.vGroup === targetGroup);
+
+    const sel = document.getElementById("cablePreset");
+    sel.innerHTML = filtered.map(c => {
+      const vSuffix = vLevel === "0.4" ? "" : `-${vLevel}`;
+      const displayLabel = c.label.replace(c.baseMark, `${c.baseMark}${vSuffix}`);
+      return `<option value="${c.id}">${displayLabel} → труба ${c.pipe} мм</option>`;
+    }).join("");
+
+    if (preserveId && filtered.some(c => c.id === preserveId)) {
+      sel.value = preserveId;
+    } else if (filtered.length > 0) {
+      sel.value = filtered[0].id;
+    }
+  }
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && Array.isArray(parsed.drills)) {
+          state = { ...state, ...parsed };
+        }
+      }
+    } catch (e) {}
+
+    document.getElementById("lineName").value = state.lineName;
+    document.getElementById("voltageLevel").value = state.voltageLevel;
+    populateCableSelect(state.cablePresetId);
+    document.getElementById("defaultPipe").value = state.defaultPipe;
+  }
+
+  function saveState() {
+    state.lineName = document.getElementById("lineName").value;
+    state.voltageLevel = document.getElementById("voltageLevel").value;
+    state.cablePresetId = document.getElementById("cablePreset").value;
+    state.defaultPipe = document.getElementById("defaultPipe").value;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (e) {}
+  }
+
+  function saveAndRenderOutputs() {
+    saveState();
+    renderOutputs();
+  }
+
+  function onVoltageChange() {
+    populateCableSelect(null);
+    onCablePresetChange();
+  }
+
+  function onCablePresetChange() {
+    const presetId = document.getElementById("cablePreset").value;
+    const info = CABLE_CATALOG.find(c => c.id === presetId);
+    if (info) {
+      document.getElementById("defaultPipe").value = info.pipe;
+      state.drills.forEach(d => d.pipeDia = info.pipe);
+    }
+    saveState();
+    renderDrillsTable();
+    renderOutputs();
+  }
+
+  function applyDefaultPipeToAll() {
+    const p = document.getElementById("defaultPipe").value;
+    state.drills.forEach(d => d.pipeDia = p);
+    saveState();
+    renderDrillsTable();
+    renderOutputs();
+  }
+
+  function addRow() {
+    const nextId = state.drills.length ? Math.max(...state.drills.map(d => d.id)) + 1 : 1;
+    state.drills.push({
+      id: nextId,
+      title: `Прокол №${nextId}`,
+      lengthStr: "30",
+      pipesCount: 1,
+      pits: 2,
+      pipeDia: document.getElementById("defaultPipe").value
+    });
+    saveState();
+    renderDrillsTable();
+    renderOutputs();
+  }
+
+  function removeRow(id) {
+    if (state.drills.length <= 1) {
+      showToast("Должен остаться хотя бы один участок ГНБ");
+      return;
+    }
+    state.drills = state.drills.filter(d => d.id !== id);
+    saveState();
+    renderDrillsTable();
+    renderOutputs();
+  }
+
+  function onLengthInput(id, rawValue) {
+    const row = state.drills.find(d => d.id === id);
+    if (!row) return;
+    row.lengthStr = rawValue;
+    const L = parseLen(rawValue);
+    const nTubes = Number(row.pipesCount) || 1;
+    const dEquiv = calcEquivBundleDiaMm(row.pipeDia, nTubes);
+    const dBore = calcBoreDiameter(row.pipeDia, nTubes, L);
+    const vBore = (PI_EXCEL * dBore * dBore / 4) * L;
+    const badge = document.getElementById(`boreBadge_${id}`);
+    if (badge) {
+      badge.textContent = `Dэкв=${fmt(dEquiv, 2)} | D=${fmt(dBore, 4)} м | ${fmt(vBore, 3)} м³`;
+    }
+    saveAndRenderOutputs();
+  }
+
+  function updateDrill(id, field, value) {
+    const row = state.drills.find(d => d.id === id);
+    if (!row) return;
+    if (field === "title" || field === "pipeDia") {
+      row[field] = value;
+    } else {
+      const val = parseInt(value, 10);
+      row[field] = isNaN(val) || val < 0 ? 0 : val;
+    }
+    saveState();
+    renderDrillsTable();
+    renderOutputs();
+  }
+
+  function loadExample() {
+    state = {
+      lineName: "!!!Название линии!!!",
+      voltageLevel: "0.4",
+      cablePresetId: "avbbshv_4x16",
+      defaultPipe: "63",
+      drills: [
+        { id: 1, title: "Прокол №1", lengthStr: "1", pipesCount: 1, pits: 2, pipeDia: "63" }
+      ]
+    };
+    document.getElementById("lineName").value = state.lineName;
+    document.getElementById("voltageLevel").value = state.voltageLevel;
+    populateCableSelect(state.cablePresetId);
+    document.getElementById("defaultPipe").value = state.defaultPipe;
+    saveState();
+    renderDrillsTable();
+    renderOutputs();
+    showToast("Загружен пример 1 (АВБбШв 4х16-1, 1 м, Dэкв=63 мм, вода 150 л)");
+  }
+
+  function loadExample86() {
+    state = {
+      lineName: "!!!Название линии!!!",
+      voltageLevel: "10",
+      cablePresetId: "apvpg_1x150",
+      defaultPipe: "160",
+      drills: [
+        { id: 1, title: "Прокол №1 (50-99м, тип 2)", lengthStr: "86", pipesCount: 2, pits: 2, pipeDia: "160" }
+      ]
+    };
+    document.getElementById("lineName").value = state.lineName;
+    document.getElementById("voltageLevel").value = state.voltageLevel;
+    populateCableSelect(state.cablePresetId);
+    document.getElementById("defaultPipe").value = state.defaultPipe;
+    saveState();
+    renderDrillsTable();
+    renderOutputs();
+    showToast("Загружен пример 2: 86 м, 2 трубы d160 (бентонит 46,732 шт, вода 185760 л)");
+  }
+
+  function resetData() {
+    state.lineName = "КЛ-10 кВ";
+    state.drills = [
+      { id: 1, title: "Прокол №1", lengthStr: "", pipesCount: 1, pits: 2, pipeDia: state.defaultPipe }
+    ];
+    document.getElementById("lineName").value = state.lineName;
+    saveState();
+    renderDrillsTable();
+    renderOutputs();
+  }
+
+  function renderDrillsTable() {
+    const tbody = document.getElementById("drillsBody");
+    tbody.innerHTML = state.drills.map((d, idx) => {
+      const L = parseLen(d.lengthStr);
+      const nTubes = Number(d.pipesCount) || 1;
+      const dEquiv = calcEquivBundleDiaMm(d.pipeDia, nTubes);
+      const dBore = calcBoreDiameter(d.pipeDia, nTubes, L);
+      const vBore = (PI_EXCEL * dBore * dBore / 4) * L;
+      return `
+        <tr>
+          <td class="tc">${idx + 1}</td>
+          <td>
+            <input type="text" value="${escapeHtml(d.title)}"
+              onchange="updateDrill(${d.id}, 'title', this.value)" />
+          </td>
+          <td>
+            <input type="text" inputmode="decimal" placeholder="Например: 86"
+              value="${escapeHtml(d.lengthStr)}"
+              oninput="onLengthInput(${d.id}, this.value)" />
+          </td>
+          <td>
+            <select onchange="updateDrill(${d.id}, 'pipesCount', this.value)">
+              <option value="1" ${d.pipesCount == 1 ? "selected" : ""}>Тип 1 (1 труба в скважине)</option>
+              <option value="2" ${d.pipesCount == 2 ? "selected" : ""}>Тип 2 (2 трубы в скважине)</option>
+              <option value="3" ${d.pipesCount == 3 ? "selected" : ""}>Тип 3 (3 трубы в скважине)</option>
+              <option value="4" ${d.pipesCount == 4 ? "selected" : ""}>Тип 4 (4 трубы в скважине)</option>
+              <option value="5" ${d.pipesCount == 5 ? "selected" : ""}>Тип 5 (5 труб в скважине)</option>
+              <option value="6" ${d.pipesCount == 6 ? "selected" : ""}>Тип 6 (6 труб в скважине)</option>
+            </select>
+          </td>
+          <td>
+            <input type="number" min="0" step="1" value="${d.pits}"
+              oninput="updateDrill(${d.id}, 'pits', this.value)" />
+          </td>
+          <td>
+            <select onchange="updateDrill(${d.id}, 'pipeDia', this.value)">
+              <option value="63"  ${d.pipeDia === "63"  ? "selected" : ""}>63x4,7 SN32 F2 (УКПТ-75/20)</option>
+              <option value="110" ${d.pipeDia === "110" ? "selected" : ""}>110x8,1 SN32 F2 (УКПТ-130/28)</option>
+              <option value="160" ${d.pipeDia === "160" ? "selected" : ""}>160x11,8 SN32 F2 (УКПТ-175/55)</option>
+              <option value="225" ${d.pipeDia === "225" ? "selected" : ""}>225x16,6 SN32 F2 (УКПТ-265/75)</option>
+            </select>
+          </td>
+          <td class="tc">
+            <span class="badge-calc" id="boreBadge_${d.id}">Dэкв=${fmt(dEquiv, 2)} | D=${fmt(dBore, 4)} м | ${fmt(vBore, 3)} м³</span>
+          </td>
+          <td class="tc">
+            <button class="danger" title="Удалить прокол" onclick="removeRow(${d.id})">✕</button>
+          </td>
+        </tr>
+      `;
+    }).join("");
+  }
+
+  function calculate() {
+    const showZero = document.getElementById("showZeroRows").checked;
+    const vLevel = document.getElementById("voltageLevel").value;
+    const presetId = document.getElementById("cablePreset").value;
+    const cableInfo = CABLE_CATALOG.find(c => c.id === presetId) || CABLE_CATALOG[0];
+
+    const vCode = vLevel === "0.4" ? "1" : vLevel;
+    const fullCableMark = `${cableInfo.baseMark}-${vCode}`;
+    const vorCableTitle = cableInfo.mult === 3 ? `3х${fullCableMark}` : fullCableMark;
+
+    const totalDrillsCount = state.drills.filter(d => parseLen(d.lengthStr) > 0).length || state.drills.length;
+    let totalBoreLength = 0;
+    let totalBoreVolumeM3 = 0;
+    let totalWaterLiters = 0;
+    let totalPits = 0;
+    let totalCableNet = 0;
+    let totalPipeEnds = 0;
+
+    const pipeLayGroups = {};
+    const pipeMetersByDia = { "63": 0, "110": 0, "160": 0, "225": 0 };
+    const ukptCountByDia = { "63": 0, "110": 0, "160": 0, "225": 0 };
+
+    state.drills.forEach(d => {
+      const L = parseLen(d.lengthStr);
+      const nTubes = Number(d.pipesCount) || 1;
+      const pits = Number(d.pits) || 0;
+      const dia = d.pipeDia || cableInfo.pipe;
+
+      const dEquivMm = calcEquivBundleDiaMm(dia, nTubes);
+      const dBore = calcBoreDiameter(dia, nTubes, L);
+      const vBore = (PI_EXCEL * dBore * dBore / 4) * L;
+      const waterRate = calcWaterRatePerM(dEquivMm);
+
+      totalBoreLength += L;
+      totalBoreVolumeM3 += vBore;
+      totalWaterLiters += L * waterRate;
+      totalPits += pits;
+
+      const key = `${nTubes}_${dia}`;
+      if (!pipeLayGroups[key]) {
+        pipeLayGroups[key] = { nTubes, dia, length: 0 };
+      }
+      pipeLayGroups[key].length += L;
+
+      const tubesTotalLen = L * nTubes;
+      pipeMetersByDia[dia] = (pipeMetersByDia[dia] || 0) + tubesTotalLen;
+
+      if (L > 0) {
+        const ends = nTubes * 2;
+        ukptCountByDia[dia] = (ukptCountByDia[dia] || 0) + ends;
+        totalPipeEnds += ends;
+      }
+
+      totalCableNet += L * cableInfo.mult;
+    });
+
+    const totalCableWithReserve = totalCableNet * 1.02;
+    const totalPitVolume = totalPits * 8;
+
+    return {
+      showZero,
+      cableInfo,
+      fullCableMark,
+      vorCableTitle,
+      totalDrillsCount,
+      totalBoreLength,
+      totalBoreVolumeM3,
+      totalWaterLiters,
+      totalPits,
+      totalPitVolume,
+      totalCableNet,
+      totalCableWithReserve,
+      totalPipeEnds,
+      pipeLayGroups,
+      pipeMetersByDia,
+      ukptCountByDia
+    };
+  }
+
+  function renderOutputs() {
+    const calc = calculate();
+
+    const totalBentoniteKg = calc.totalBoreVolumeM3 * 100;
+    const totalPolymersKg = calc.totalBoreVolumeM3 * 2;
+
+    document.getElementById("kpiBar").innerHTML = `
+      <div class="kpi-item">Кабель: <strong>${escapeHtml(calc.vorCableTitle)}</strong></div>
+      <div class="kpi-item">Длина ГНБ: <strong>${fmt(calc.totalBoreLength, 2)} м</strong> (${calc.totalDrillsCount} уч.)</div>
+      <div class="kpi-item">Vкан: <strong>${fmt(calc.totalBoreVolumeM3, 3)} м³</strong></div>
+      <div class="kpi-item">Бентонит: <strong>${fmt(totalBentoniteKg, 3)} кг</strong> (${fmt(totalBentoniteKg / 25, 3)} шт)</div>
+      <div class="kpi-item">Полимеры (всего): <strong>${fmt(totalPolymersKg, 3)} кг</strong> (40%/20%/40%)</div>
+      <div class="kpi-item">Вода: <strong>${fmt(calc.totalWaterLiters, 0)} л</strong> (${fmt(calc.totalWaterLiters / 1000, 3)} м³)</div>
+    `;
+
+    // --- ВОР ---
+    const vorRows = [];
+    let printIdx = 1;
+    let itemIdx = 1;
+
+    vorRows.push(`
+      <tr class="title-row">
+        <td class="tc">${printIdx++}</td>
+        <td></td>
+        <td>Строительство ${escapeHtml(state.lineName)} методом ГНБ</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    `);
+
+    vorRows.push(`
+      <tr>
+        <td class="tc">${printIdx++}</td>
+        <td class="tc">${itemIdx++}</td>
+        <td>Общая длина ГНБ (${calc.totalDrillsCount} уч., ${fmt(calc.totalBoreLength, 2)}м)</td>
+        <td class="tc">м</td>
+        <td class="tr">${fmt(calc.totalBoreLength, 2)}</td>
+        <td></td>
+      </tr>
+    `);
+
+    vorRows.push(`
+      <tr>
+        <td class="tc">${printIdx++}</td>
+        <td class="tc">${itemIdx++}</td>
+        <td>Рытье приямка для ГНБ, (2*2*2м3)</td>
+        <td class="tc">м3</td>
+        <td class="tr">${fmt(calc.totalPitVolume, 2)}</td>
+        <td class="tc">${calc.totalPits} шт</td>
+      </tr>
+    `);
+
+    vorRows.push(`
+      <tr>
+        <td class="tc">${printIdx++}</td>
+        <td class="tc">${itemIdx++}</td>
+        <td>Обратная засыпка приямка ГНБ, (2*2*2м3)</td>
+        <td class="tc">м3</td>
+        <td class="tr">${fmt(calc.totalPitVolume, 2)}</td>
+        <td class="tc">${calc.totalPits} шт</td>
+      </tr>
+    `);
+
+    const activeGroups = Object.values(calc.pipeLayGroups).sort((a, b) => a.nTubes - b.nTubes);
+    activeGroups.forEach(g => {
+      if (g.length > 0 || !calc.showZero) {
+        vorRows.push(`
+          <tr>
+            <td class="tc">${g.length > 0 ? printIdx++ : ""}</td>
+            <td class="tc">${g.length > 0 ? itemIdx++ : ""}</td>
+            <td>Прокладка ${g.nTubes}тр.-d.${g.dia}мм. в 1 бур.кан.</td>
+            <td class="tc">м</td>
+            <td class="tr">${fmt(g.length, 2)}</td>
+            <td></td>
+          </tr>
+        `);
+      }
+    });
+
+    if (calc.showZero) {
+      [2, 3, 4].forEach(t => {
+        const hasType = activeGroups.some(g => g.nTubes === t && g.length > 0);
+        if (!hasType) {
+          vorRows.push(`
+            <tr class="zero-row">
+              <td></td>
+              <td></td>
+              <td>Прокладка в 1 бур.кан. (ГНБ тип${t})</td>
+              <td class="tc">м</td>
+              <td class="tr">0</td>
+              <td></td>
+            </tr>
+          `);
+        }
+      });
+    }
+
+    vorRows.push(`
+      <tr>
+        <td class="tc">${printIdx++}</td>
+        <td class="tc">${itemIdx++}</td>
+        <td>Прокладка кабеля ${escapeHtml(calc.vorCableTitle)} методом ГНБ</td>
+        <td class="tc">м</td>
+        <td class="tr">${fmt(calc.totalCableNet, 2)}</td>
+        <td></td>
+      </tr>
+    `);
+
+    const activeDias = Object.keys(calc.ukptCountByDia).filter(d => calc.ukptCountByDia[d] > 0);
+    const noteUkpt = activeDias.length === 1
+      ? `${Math.round(calc.ukptCountByDia[activeDias[0]] / 2)} тр.`
+      : `${Math.round(calc.totalPipeEnds / 2)} тр.`;
+
+    vorRows.push(`
+      <tr>
+        <td class="tc">${printIdx++}</td>
+        <td class="tc">${itemIdx++}</td>
+        <td>Герметизация кабельного ввода в трубу (УКПТ)</td>
+        <td class="tc">шт</td>
+        <td class="tr">${fmt(calc.totalPipeEnds, 0)}</td>
+        <td class="tc">${noteUkpt}</td>
+      </tr>
+    `);
+
+    document.getElementById("vorBody").innerHTML = vorRows.join("");
+
+    // --- Спецификация ---
+    const specRows = [];
+    let sPrint = 1;
+    let sPos = 1;
+
+    specRows.push(`
+      <tr class="title-row">
+        <td class="tc">${sPrint++}</td>
+        <td></td>
+        <td colspan="13" style="text-align:center;">Строительство ${escapeHtml(state.lineName)} методом ГНБ</td>
+      </tr>
+    `);
+
+    specRows.push(`
+      <tr class="section-row">
+        <td class="tc">${sPrint++}</td>
+        <td></td>
+        <td colspan="13">Кабельная продукция</td>
+      </tr>
+    `);
+
+    const cMdm = calc.cableInfo.mdm || "";
+    const cFgisName = calc.cableInfo.fgisName || "ОТСУТСТВУЕТ";
+    const cFgisCode = calc.cableInfo.fgis || "ОТСУТСТВУЕТ";
+    const cFgisUnit = cFgisCode !== "ОТСУТСТВУЕТ" ? "1000м" : "-";
+    const cFgisCoef = cFgisCode !== "ОТСУТСТВУЕТ" ? 1000 : "-";
+    const cFgisQty  = cFgisCoef === 1000 ? fmt(calc.totalCableWithReserve / 1000, 6) : "-";
+
+    specRows.push(`
+      <tr>
+        <td class="tc">${sPrint++}</td>
+        <td class="tc">${sPos++}</td>
+        <td>Кабель силовой</td>
+        <td class="nw">${escapeHtml(calc.fullCableMark)}</td>
+        <td class="tc">${cMdm}</td>
+        <td></td>
+        <td class="tc">м</td>
+        <td class="tr">${fmt(calc.totalCableWithReserve, 2)}</td>
+        <td class="tr">${fmt(calc.cableInfo.weight, 3)}</td>
+        <td>${cFgisName}</td>
+        <td class="tc nw">${cFgisCode}</td>
+        <td class="tc">${cFgisUnit}</td>
+        <td class="tc">${cFgisCoef}</td>
+        <td class="tr">${cFgisQty}</td>
+        <td class="tc nw">в т.ч. 2%</td>
+      </tr>
+    `);
+
+    specRows.push(`
+      <tr class="section-row">
+        <td class="tc">${sPrint++}</td>
+        <td></td>
+        <td colspan="13">Трубы</td>
+      </tr>
+    `);
+
+    ["63", "110", "160", "225"].forEach(dia => {
+      const qty = calc.pipeMetersByDia[dia] || 0;
+      if (qty === 0 && !calc.showZero) return;
+      const p = PIPES_DB[dia];
+      const fgisQty = p.coef === 1 ? fmt(qty, 2) : "-";
+      specRows.push(`
+        <tr class="${qty === 0 ? "zero-row" : ""}">
+          <td class="tc">${qty > 0 ? sPrint++ : ""}</td>
+          <td class="tc">${qty > 0 ? sPos++ : ""}</td>
+          <td>${p.name}</td>
+          <td>${p.doc}</td>
+          <td class="tc">${p.mdm}</td>
+          <td></td>
+          <td class="tc">м</td>
+          <td class="tr">${fmt(qty, 2)}</td>
+          <td class="tr">${fmt(p.mass, 3)}</td>
+          <td>${p.fgisName}</td>
+          <td class="tc nw">${p.fgisCode}</td>
+          <td class="tc">${p.fgisUnit}</td>
+          <td class="tc">${p.coef}</td>
+          <td class="tr">${fgisQty}</td>
+          <td></td>
+        </tr>
+      `);
+    });
+
+    specRows.push(`
+      <tr class="section-row">
+        <td class="tc">${sPrint++}</td>
+        <td></td>
+        <td colspan="13">Материалы</td>
+      </tr>
+    `);
+
+    // УКПТ
+    ["63", "110", "160", "225"].forEach(dia => {
+      const qty = calc.ukptCountByDia[dia] || 0;
+      if (qty === 0 && !calc.showZero) return;
+      const u = UKPT_DB[dia];
+      const fgisQty = u.coef === 1 ? fmt(qty, 0) : "-";
+      specRows.push(`
+        <tr class="${qty === 0 ? "zero-row" : ""}">
+          <td class="tc">${qty > 0 ? sPrint++ : ""}</td>
+          <td class="tc">${qty > 0 ? sPos++ : ""}</td>
+          <td>Уплотнитель кабельных проходов</td>
+          <td class="nw">${u.type}</td>
+          <td class="tc">${u.mdm}</td>
+          <td></td>
+          <td class="tc">шт</td>
+          <td class="tr">${fmt(qty, 0)}</td>
+          <td class="tr">${fmt(u.mass, 3)}</td>
+          <td>${u.fgisName}</td>
+          <td class="tc nw">${u.fgisCode}</td>
+          <td class="tc">${u.fgisUnit}</td>
+          <td class="tc">${u.coef}</td>
+          <td class="tr">${fgisQty}</td>
+          <td></td>
+        </tr>
+      `);
+    });
+
+    // Бентонит, полимеры (40% / 20% / 40%), сода
+    DRILL_MATERIALS.forEach(m => {
+      const totalKg = calc.totalBoreVolumeM3 * m.kgPerM3Bore;
+      const qtyRounded = Math.round((totalKg / m.packKg) * 1000) / 1000;
+      if (qtyRounded === 0 && !calc.showZero) return;
+      const fgisQty = typeof m.coef === "number" ? fmt(qtyRounded / m.coef, 6) : "-";
+
+      specRows.push(`
+        <tr class="${qtyRounded === 0 ? "zero-row" : ""}">
+          <td class="tc">${qtyRounded > 0 ? sPrint++ : ""}</td>
+          <td class="tc">${qtyRounded > 0 ? sPos++ : ""}</td>
+          <td>${m.name}</td>
+          <td class="nw">${m.type}</td>
+          <td class="tc">${m.mdm}</td>
+          <td></td>
+          <td class="tc">${m.unit}</td>
+          <td class="tr">${fmt(qtyRounded, 3)}</td>
+          <td class="tr">${fmt(m.mass, 0)}</td>
+          <td>${m.fgisName}</td>
+          <td class="tc nw">${m.fgisCode}</td>
+          <td class="tc">${m.fgisUnit}</td>
+          <td class="tc">${m.coef}</td>
+          <td class="tr">${fgisQty}</td>
+          <td class="tc nw">${m.note}</td>
+        </tr>
+      `);
+    });
+
+    // Вода техническая
+    const waterQty = Math.round(calc.totalWaterLiters * 100) / 100;
+    if (waterQty > 0 || calc.showZero) {
+      specRows.push(`
+        <tr class="${waterQty === 0 ? "zero-row" : ""}">
+          <td class="tc">${waterQty > 0 ? sPrint++ : ""}</td>
+          <td class="tc">${waterQty > 0 ? sPos++ : ""}</td>
+          <td>Вода техническая</td>
+          <td></td>
+          <td class="tc">97887</td>
+          <td></td>
+          <td class="tc">л</td>
+          <td class="tr">${fmt(waterQty, 2)}</td>
+          <td></td>
+          <td>Вода</td>
+          <td class="tc nw">01.7.03.01-0001</td>
+          <td class="tc">м3</td>
+          <td class="tc">1000</td>
+          <td class="tr">${fmt(waterQty / 1000, 6)}</td>
+          <td></td>
+        </tr>
+      `);
+    }
+
+    document.getElementById("specBody").innerHTML = specRows.join("");
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function showToast(msg) {
+    const el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(el._timer);
+    el._timer = setTimeout(() => el.classList.remove("show"), 2800);
+  }
+
+  function copyTable(tableId, message) {
+    const table = document.getElementById(tableId);
+    const range = document.createRange();
+    range.selectNode(table);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    try {
+      document.execCommand("copy");
+      showToast(message);
+    } catch (e) {
+      showToast("Не удалось скопировать таблицу");
+    }
+    sel.removeAllRanges();
+  }
+
+  function exportExcel() {
+    const xml = `<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Font ss:FontName="Arial" ss:Size="10"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="Head">
+   <Font ss:FontName="Arial" ss:Size="10" ss:Bold="1"/>
+   <Interior ss:Color="#E2E8F0" ss:Pattern="Solid"/>
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="Sec">
+   <Font ss:FontName="Arial" ss:Size="10" ss:Bold="1"/>
+   <Interior ss:Color="#DBEAFE" ss:Pattern="Solid"/>
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+  </Style>
+ </Styles>
+ ${tableToWorksheetXml("ВОР", document.getElementById("vorTable"))}
+ ${tableToWorksheetXml("Спецификация", document.getElementById("specTable"))}
+</Workbook>`;
+
+    const blob = new Blob([xml], { type: "application/vnd.ms-excel;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    const cleanName = (state.lineName || "ГНБ").replace(/[\\/:*?"<>|]/g, "_");
+    a.download = `ВОР_и_Спецификация_ГНБ_${cleanName}.xls`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast("Файл Excel (.xls) сформирован");
+  }
+
+  function tableToWorksheetXml(sheetName, tableEl) {
+    let rowsXml = "";
+    const trs = tableEl.querySelectorAll("tr");
+    trs.forEach(tr => {
+      const isHead = tr.parentElement.tagName === "THEAD";
+      const isSec = tr.classList.contains("section-row") || tr.classList.contains("title-row");
+      const styleId = isHead ? "Head" : (isSec ? "Sec" : "Default");
+      rowsXml += "<Row>";
+      tr.querySelectorAll("th, td").forEach(cell => {
+        const colspan = parseInt(cell.getAttribute("colspan") || "1", 10);
+        const mergeAttr = colspan > 1 ? ` ss:MergeAcross="${colspan - 1}"` : "";
+        const txt = cell.textContent.trim();
+        const numCandidate = txt.replace(",", ".");
+        const isNumeric = txt !== "" && !isNaN(numCandidate) && !/^0\d/.test(txt) && !txt.includes("-");
+        if (isNumeric) {
+          rowsXml += `<Cell ss:StyleID="${styleId}"${mergeAttr}><Data ss:Type="Number">${numCandidate}</Data></Cell>`;
+        } else {
+          rowsXml += `<Cell ss:StyleID="${styleId}"${mergeAttr}><Data ss:Type="String">${escapeHtml(txt)}</Data></Cell>`;
+        }
+      });
+      rowsXml += "</Row>\n";
+    });
+
+    return `<Worksheet ss:Name="${escapeHtml(sheetName)}"><Table>${rowsXml}</Table></Worksheet>`;
+  }
+
+  loadState();
+  renderDrillsTable();
+  renderOutputs();
+</script>
+</body>
+</html>
