@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ГНБ-Проект: ВОР и Спецификация КЛ 0,4–10 кВ (ПОНТ)</title>
+  <title>ГНБ-Проект: ВОР и Спецификация КЛ 0,4–10 кВ</title>
   <style>
     :root {
       --bg: #f1f5f9;
@@ -42,15 +42,37 @@
       gap: 10px;
       border-bottom: 2px solid var(--primary);
     }
+    .brand-block {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
     header h1 {
       margin: 0;
       font-size: 15px;
       font-weight: 600;
       letter-spacing: 0.2px;
     }
-    header .sub {
-      font-size: 11px;
-      color: #94a3b8;
+    .author-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #e2e8f0;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 500;
+    }
+    .flag-us-svg {
+      width: 18px;
+      height: 12px;
+      border-radius: 2px;
+      display: inline-block;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.25);
     }
     .toolbar {
       display: flex;
@@ -117,6 +139,19 @@
       gap: 8px;
       color: #1e293b;
     }
+    .sub-card-header {
+      margin: 16px 0 8px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .sub-card-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #1e293b;
+    }
 
     .grid-params {
       display: grid;
@@ -168,11 +203,32 @@
       border: 1px solid var(--border);
       padding: 5px 7px;
       text-align: left;
+      vertical-align: middle;
     }
     .input-table th {
       background: #f8fafc;
       font-size: 11.5px;
       color: var(--muted);
+    }
+    .pits-k12-box {
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: #334155;
+    }
+    .pits-k12-box input[type="number"] {
+      width: 56px;
+      padding: 3px 5px;
+      font-size: 11.5px;
+    }
+    .table-actions-bottom {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 10px;
     }
 
     .split-output {
@@ -223,6 +279,10 @@
       font-weight: 700;
       text-align: center;
     }
+    table.excel tr.total-row td {
+      background: #f1f5f9;
+      font-weight: 700;
+    }
     table.excel tr.zero-row {
       color: #94a3b8;
     }
@@ -271,13 +331,28 @@
 <body>
 
 <header>
-  <div>
+  <div class="brand-block">
     <h1>ГНБ-Проект: ВОР и Спецификация КЛ 0,4–10 кВ</h1>
-    <div class="sub">Шаблон 14.24 PRO_ПОНТ • Расчёт раствора по Dбур.канала и воды по Dэкв пакета труб</div>
+    <span class="author-badge">
+      <svg class="flag-us-svg" viewBox="0 0 190 100" xmlns="http://www.w3.org/2000/svg" aria-label="USA">
+        <rect width="190" height="100" fill="#B22234"/>
+        <path d="M0,15.38H190M0,30.77H190M0,46.15H190M0,61.54H190M0,76.92H190M0,92.31H190" stroke="#FFFFFF" stroke-width="7.69"/>
+        <rect width="76" height="53.85" fill="#3C3B6E"/>
+        <g fill="#FFFFFF">
+          <circle cx="12" cy="10" r="2.6"/><circle cx="25" cy="10" r="2.6"/><circle cx="38" cy="10" r="2.6"/><circle cx="51" cy="10" r="2.6"/><circle cx="64" cy="10" r="2.6"/>
+          <circle cx="18.5" cy="18" r="2.6"/><circle cx="31.5" cy="18" r="2.6"/><circle cx="44.5" cy="18" r="2.6"/><circle cx="57.5" cy="18" r="2.6"/>
+          <circle cx="12" cy="26" r="2.6"/><circle cx="25" cy="26" r="2.6"/><circle cx="38" cy="26" r="2.6"/><circle cx="51" cy="26" r="2.6"/><circle cx="64" cy="26" r="2.6"/>
+          <circle cx="18.5" cy="34" r="2.6"/><circle cx="31.5" cy="34" r="2.6"/><circle cx="44.5" cy="34" r="2.6"/><circle cx="57.5" cy="34" r="2.6"/>
+          <circle cx="12" cy="42" r="2.6"/><circle cx="25" cy="42" r="2.6"/><circle cx="38" cy="42" r="2.6"/><circle cx="51" cy="42" r="2.6"/><circle cx="64" cy="42" r="2.6"/>
+        </g>
+      </svg>
+      <span>by airatsaid</span>
+    </span>
   </div>
   <div class="toolbar">
-    <button onclick="loadExample()">Пример 1 (АВБбШв 4х16, 1 м)</button>
-    <button onclick="loadExample86()">Пример 2 (86 м, ГНБ тип 2, d160)</button>
+    <button onclick="saveProjectFile()">Сохранить проект</button>
+    <button onclick="document.getElementById('projectFileInput').click()">Загрузить проект</button>
+    <input type="file" id="projectFileInput" accept=".json,application/json" style="display:none;" onchange="loadProjectFile(event)" />
     <button onclick="resetData()">Очистить</button>
     <button class="success" onclick="exportExcel()">Скачать Excel (.xls)</button>
   </div>
@@ -298,7 +373,7 @@
     <div class="grid-params">
       <div class="field" style="grid-column: span 2;">
         <label>Наименование линии (для заголовка ВОР и Спецификации)</label>
-        <input type="text" id="lineName" value="!!!Название линии!!!" oninput="saveAndRenderOutputs()" />
+        <input type="text" id="lineName" value="КЛ-10 кВ" oninput="saveAndRenderOutputs()" />
       </div>
 
       <div class="field">
@@ -333,7 +408,6 @@
   <div class="card">
     <div class="card-title">
       <span>2. Участки прокладки методом ГНБ</span>
-      <button class="primary" onclick="addRow()">+ Добавить прокол ГНБ</button>
     </div>
 
     <div class="table-wrap" style="border: none;">
@@ -342,23 +416,29 @@
           <tr>
             <th style="width: 40px;">№</th>
             <th>Примечание / номер прокола</th>
-            <th style="width: 140px;">Длина ГНБ, м (ручной ввод)</th>
-            <th style="width: 220px;">Тип ГНБ (труб в скважине)</th>
-            <th style="width: 120px;">Кол-во приямков, шт</th>
-            <th style="width: 235px;">Диаметр трубы ПНД (SN32 F2)</th>
-            <th style="width: 235px;">Расчёт канала (Dэкв / Dбур / Vкан)</th>
-            <th style="width: 46px;"></th>
+            <th style="width: 92px; text-align: center;">Коэф. 1,15<br><span style="font-weight:400;font-size:10.5px;">(стеснённые)</span></th>
+            <th style="width: 225px;">Коэф. 1,2<br><span style="font-weight:400;font-size:10.5px;">(охранная зона КЛ)</span></th>
+            <th style="width: 130px;">Длина ГНБ, м</th>
+            <th style="width: 215px;">Тип ГНБ (труб в скважине)</th>
+            <th style="width: 115px;">Кол-во приямков, шт</th>
+            <th style="width: 225px;">Диаметр трубы ПНД (SN32 F2)</th>
+            <th style="width: 225px;">Расчёт канала (Dэкв / Dбур / Vкан)</th>
+            <th style="width: 44px;"></th>
           </tr>
         </thead>
         <tbody id="drillsBody"></tbody>
       </table>
+    </div>
+
+    <div class="table-actions-bottom">
+      <button class="primary" onclick="addRow()">+ Добавить прокол ГНБ</button>
     </div>
   </div>
 
   <!-- 3. Вывод ВОР и Спецификации на одном экране -->
   <div class="split-output">
 
-    <!-- ВОР -->
+    <!-- ВОР и сводная таблица участков по коэффициентам -->
     <div class="card">
       <div class="card-title">
         <span>Ведомость объемов работ (ВОР)</span>
@@ -378,9 +458,29 @@
           <tbody id="vorBody"></tbody>
         </table>
       </div>
+
+      <div class="sub-card-header">
+        <span class="sub-card-title">Участки ГНБ: длины и применимость коэффициентов 1,2 и 1,15</span>
+        <button class="success" onclick="exportK12Excel()">Скачать в Excel (.xls)</button>
+      </div>
+      <div class="table-wrap">
+        <table class="excel" id="k12SummaryTable">
+          <thead>
+            <tr>
+              <th style="width: 44px;">№</th>
+              <th>Участок / прокол</th>
+              <th style="width: 82px;">Длина, м</th>
+              <th style="width: 72px;">Приямки, шт</th>
+              <th style="width: 125px;">Применимость К-1,15</th>
+              <th>Применимость К-1,2</th>
+            </tr>
+          </thead>
+          <tbody id="k12SummaryBody"></tbody>
+        </table>
+      </div>
     </div>
 
-    <!-- Спецификация -->
+    <!-- Спецификация и таблица расхода материалов/воды по коэффициентам -->
     <div class="card">
       <div class="card-title">
         <span>Спецификация оборудования, изделий и материалов</span>
@@ -423,6 +523,28 @@
             </tr>
           </thead>
           <tbody id="specBody"></tbody>
+        </table>
+      </div>
+
+      <div class="sub-card-header">
+        <span class="sub-card-title">Расход бентонита, полимеров, соды и воды по коэффициентам (по бурению)</span>
+      </div>
+      <div class="table-wrap">
+        <table class="excel" id="coefMaterialsTable">
+          <thead>
+            <tr>
+              <th style="width: 40px;">№</th>
+              <th>Группа участков по коэффициентам</th>
+              <th>Проколы, длины и общая длина, м</th>
+              <th>Бентонит, 25 кг, шт</th>
+              <th>Полимер VIS (Ксантан), 25 кг, шт</th>
+              <th>Полимер New-drill (PHPA), 25 кг, шт</th>
+              <th>Полимер Terra Raid (PAC), 25 кг, шт</th>
+              <th>Сода кальц., 25 кг, шт</th>
+              <th>Вода техническая, л</th>
+            </tr>
+          </thead>
+          <tbody id="coefMaterialsBody"></tbody>
         </table>
       </div>
     </div>
@@ -561,12 +683,10 @@
     }
   };
 
-  // Расходные материалы бурового раствора из шаблона ПОНТ:
-  // Бентонит: 25 кг/м³ раствора (100 кг/м³ канала)
-  // Полимеры (всего 0,5 кг/м³ раствора = 2 кг/м³ канала): Ксантан 40% (0,8 кг/м³ кан.), PHPA 20% (0,4 кг/м³ кан.), PAC 40% (0,8 кг/м³ кан.)
-  // Сода кальцинированная: 0,4 кг/м³ раствора (1,6 кг/м³ канала)
+  // Расходные материалы бурового раствора из шаблона ПОНТ
   const DRILL_MATERIALS = [
     {
+      key: "bentonite",
       name: "Бентонит, 25 кг",
       type: "UNI-GEL Universal",
       mdm: "51600",
@@ -581,6 +701,7 @@
       note: ""
     },
     {
+      key: "vis",
       name: "Полимер, 25 кг",
       type: "VIS Universal",
       mdm: "92284",
@@ -595,6 +716,7 @@
       note: "Ксантан"
     },
     {
+      key: "phpa",
       name: "Полимер, 25 кг",
       type: "New-drill plus 25 кг",
       mdm: "89482",
@@ -609,6 +731,7 @@
       note: "PHPA"
     },
     {
+      key: "pac",
       name: "Полимер, 25 кг",
       type: "Terra Raid 25 кг",
       mdm: "89486",
@@ -623,6 +746,7 @@
       note: "PAC"
     },
     {
+      key: "soda",
       name: "Сода кальцинированная техническая, 25 кг",
       type: "марка Б",
       mdm: "45882",
@@ -685,16 +809,28 @@
     return 0;
   }
 
-  const STORAGE_KEY = "gnb_pont_app_final_v3";
+  const STORAGE_KEY = "gnb_pont_app_final_v5";
+
+  function makeDefaultDrill(id = 1, defaultPipe = "63") {
+    return {
+      id,
+      title: `Прокол №${id}`,
+      k115: false,
+      k12Mode: "none", // "none" | "all" | "pits_only"
+      k12Pits: 2,
+      lengthStr: "",
+      pipesCount: 1,
+      pits: 2,
+      pipeDia: defaultPipe
+    };
+  }
 
   let state = {
-    lineName: "!!!Название линии!!!",
+    lineName: "КЛ-10 кВ",
     voltageLevel: "0.4",
     cablePresetId: "avbbshv_4x16",
     defaultPipe: "63",
-    drills: [
-      { id: 1, title: "Прокол №1", lengthStr: "1", pipesCount: 1, pits: 2, pipeDia: "63" }
-    ]
+    drills: [makeDefaultDrill(1, "63")]
   };
 
   function fmt(num, maxDec = 6) {
@@ -735,8 +871,17 @@
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (parsed && Array.isArray(parsed.drills)) {
-          state = { ...state, ...parsed };
+        if (parsed && Array.isArray(parsed.drills) && parsed.drills.length > 0) {
+          state = {
+            ...state,
+            ...parsed,
+            drills: parsed.drills.map((d, i) => ({
+              ...makeDefaultDrill(i + 1, parsed.defaultPipe || "63"),
+              ...d,
+              k12Mode: d.k12Mode || "none",
+              k12Pits: d.k12Pits !== undefined ? d.k12Pits : (d.pits !== undefined ? d.pits : 2)
+            }))
+          };
         }
       }
     } catch (e) {}
@@ -789,14 +934,9 @@
 
   function addRow() {
     const nextId = state.drills.length ? Math.max(...state.drills.map(d => d.id)) + 1 : 1;
-    state.drills.push({
-      id: nextId,
-      title: `Прокол №${nextId}`,
-      lengthStr: "30",
-      pipesCount: 1,
-      pits: 2,
-      pipeDia: document.getElementById("defaultPipe").value
-    });
+    const newDrill = makeDefaultDrill(nextId, document.getElementById("defaultPipe").value);
+    newDrill.lengthStr = "30";
+    state.drills.push(newDrill);
     saveState();
     renderDrillsTable();
     renderOutputs();
@@ -832,66 +972,102 @@
   function updateDrill(id, field, value) {
     const row = state.drills.find(d => d.id === id);
     if (!row) return;
-    if (field === "title" || field === "pipeDia") {
+    if (field === "title" || field === "pipeDia" || field === "k12Mode") {
       row[field] = value;
+      if (field === "k12Mode" && value === "pits_only") {
+        const totalPits = Math.max(0, parseInt(row.pits, 10) || 0);
+        if (!row.k12Pits || row.k12Pits > totalPits) {
+          row.k12Pits = totalPits;
+        }
+      }
+    } else if (field === "k115") {
+      row.k115 = Boolean(value);
     } else {
       const val = parseInt(value, 10);
       row[field] = isNaN(val) || val < 0 ? 0 : val;
+      if (field === "pits") {
+        if (row.k12Pits > row.pits) {
+          row.k12Pits = row.pits;
+        }
+      }
+      if (field === "k12Pits") {
+        const maxP = Math.max(0, parseInt(row.pits, 10) || 0);
+        if (row.k12Pits > maxP) row.k12Pits = maxP;
+      }
     }
     saveState();
     renderDrillsTable();
     renderOutputs();
   }
 
-  function loadExample() {
-    state = {
-      lineName: "!!!Название линии!!!",
-      voltageLevel: "0.4",
-      cablePresetId: "avbbshv_4x16",
-      defaultPipe: "63",
-      drills: [
-        { id: 1, title: "Прокол №1", lengthStr: "1", pipesCount: 1, pits: 2, pipeDia: "63" }
-      ]
-    };
-    document.getElementById("lineName").value = state.lineName;
-    document.getElementById("voltageLevel").value = state.voltageLevel;
-    populateCableSelect(state.cablePresetId);
-    document.getElementById("defaultPipe").value = state.defaultPipe;
-    saveState();
-    renderDrillsTable();
-    renderOutputs();
-    showToast("Загружен пример 1 (АВБбШв 4х16-1, 1 м, Dэкв=63 мм, вода 150 л)");
-  }
-
-  function loadExample86() {
-    state = {
-      lineName: "!!!Название линии!!!",
-      voltageLevel: "10",
-      cablePresetId: "apvpug_1x150",
-      defaultPipe: "160",
-      drills: [
-        { id: 1, title: "Прокол №1 (50-99м, тип 2)", lengthStr: "86", pipesCount: 2, pits: 2, pipeDia: "160" }
-      ]
-    };
-    document.getElementById("lineName").value = state.lineName;
-    document.getElementById("voltageLevel").value = state.voltageLevel;
-    populateCableSelect(state.cablePresetId);
-    document.getElementById("defaultPipe").value = state.defaultPipe;
-    saveState();
-    renderDrillsTable();
-    renderOutputs();
-    showToast("Загружен пример 2: 86 м, АПвПу2г 1х150/95-10, 2 трубы d160 (бентонит 46,732 шт, вода 185760 л)");
-  }
-
   function resetData() {
+    const defPipe = document.getElementById("defaultPipe").value || "63";
     state.lineName = "КЛ-10 кВ";
-    state.drills = [
-      { id: 1, title: "Прокол №1", lengthStr: "", pipesCount: 1, pits: 2, pipeDia: state.defaultPipe }
-    ];
+    state.drills = [makeDefaultDrill(1, defPipe)];
     document.getElementById("lineName").value = state.lineName;
     saveState();
     renderDrillsTable();
     renderOutputs();
+    showToast("Данные очищены");
+  }
+
+  function saveProjectFile() {
+    saveState();
+    const payload = {
+      app: "gnb-calculator",
+      version: 1,
+      savedAt: new Date().toISOString(),
+      state
+    };
+    const jsonStr = JSON.stringify(payload, null, 2);
+    const blob = new Blob([jsonStr], { type: "application/json;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    const cleanName = (state.lineName || "проект").replace(/[\\/:*?"<>|]/g, "_");
+    a.href = url;
+    a.download = `ГНБ_проект_${cleanName}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast("Проект сохранён в файл .json");
+  }
+
+  function loadProjectFile(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const parsed = JSON.parse(e.target.result);
+        const importedState = parsed && parsed.state ? parsed.state : parsed;
+        if (!importedState || !Array.isArray(importedState.drills) || importedState.drills.length === 0) {
+          showToast("Неверный формат файла проекта");
+          return;
+        }
+        state = {
+          ...state,
+          ...importedState,
+          drills: importedState.drills.map((d, i) => ({
+            ...makeDefaultDrill(i + 1, importedState.defaultPipe || "63"),
+            ...d,
+            k12Mode: d.k12Mode || "none",
+            k12Pits: d.k12Pits !== undefined ? d.k12Pits : (d.pits !== undefined ? d.pits : 2)
+          }))
+        };
+        document.getElementById("lineName").value = state.lineName || "";
+        document.getElementById("voltageLevel").value = state.voltageLevel || "0.4";
+        populateCableSelect(state.cablePresetId);
+        document.getElementById("defaultPipe").value = state.defaultPipe || "63";
+        saveState();
+        renderDrillsTable();
+        renderOutputs();
+        showToast("Проект загружен");
+      } catch (err) {
+        showToast("Ошибка чтения файла проекта");
+      } finally {
+        event.target.value = "";
+      }
+    };
+    reader.readAsText(file, "utf-8");
   }
 
   function renderDrillsTable() {
@@ -902,12 +1078,34 @@
       const dEquiv = calcEquivBundleDiaMm(d.pipeDia, nTubes);
       const dBore = calcBoreDiameter(d.pipeDia, nTubes, L);
       const vBore = (PI_EXCEL * dBore * dBore / 4) * L;
+      const totalPits = Math.max(0, parseInt(d.pits, 10) || 0);
+      const k12PitsVal = Math.min(totalPits, Math.max(0, parseInt(d.k12Pits, 10) || 0));
+
       return `
         <tr>
           <td class="tc">${idx + 1}</td>
           <td>
             <input type="text" value="${escapeHtml(d.title)}"
               onchange="updateDrill(${d.id}, 'title', this.value)" />
+          </td>
+          <td class="tc">
+            <input type="checkbox" ${d.k115 ? "checked" : ""}
+              onchange="updateDrill(${d.id}, 'k115', this.checked)" />
+          </td>
+          <td>
+            <select onchange="updateDrill(${d.id}, 'k12Mode', this.value)">
+              <option value="none" ${d.k12Mode === "none" ? "selected" : ""}>Нет</option>
+              <option value="all" ${d.k12Mode === "all" ? "selected" : ""}>Весь участок (бурение + приямки)</option>
+              <option value="pits_only" ${d.k12Mode === "pits_only" ? "selected" : ""}>Только приямки</option>
+            </select>
+            ${d.k12Mode === "pits_only" ? `
+              <div class="pits-k12-box">
+                <span>Приямков с 1,2:</span>
+                <input type="number" min="0" max="${totalPits}" step="1" value="${k12PitsVal}"
+                  oninput="updateDrill(${d.id}, 'k12Pits', this.value)" />
+                <span>из ${totalPits} шт</span>
+              </div>
+            ` : ""}
           </td>
           <td>
             <input type="text" inputmode="decimal" placeholder="Например: 86"
@@ -925,7 +1123,7 @@
             </select>
           </td>
           <td>
-            <input type="number" min="0" step="1" value="${d.pits}"
+            <input type="number" min="0" step="1" value="${totalPits}"
               oninput="updateDrill(${d.id}, 'pits', this.value)" />
           </td>
           <td>
@@ -947,6 +1145,17 @@
     }).join("");
   }
 
+  function createEmptyGroupBucket(key, label) {
+    return {
+      key,
+      label,
+      items: [],
+      totalLength: 0,
+      boreVolumeM3: 0,
+      waterLiters: 0
+    };
+  }
+
   function calculate() {
     const showZero = document.getElementById("showZeroRows").checked;
     const vLevel = document.getElementById("voltageLevel").value;
@@ -964,26 +1173,46 @@
     let totalPits = 0;
     let totalCableNet = 0;
     let totalPipeEnds = 0;
+    let totalK12BoreLength = 0;
+    let totalK12Pits = 0;
 
     const pipeLayGroups = {};
     const pipeMetersByDia = { "63": 0, "110": 0, "160": 0, "225": 0 };
     const ukptCountByDia = { "63": 0, "110": 0, "160": 0, "225": 0 };
 
-    state.drills.forEach(d => {
+    // 4 группы по коэффициентам на бурение (раствор и вода)
+    const groups = {
+      both: createEmptyGroupBucket("both", "Совмещение коэффициентов 1,15 и 1,2"),
+      only_115: createEmptyGroupBucket("only_115", "Только коэффициент 1,15 (стеснённые условия)"),
+      only_12: createEmptyGroupBucket("only_12", "Только коэффициент 1,2 (охранная зона КЛ)"),
+      none: createEmptyGroupBucket("none", "Без коэффициентов")
+    };
+
+    const drillDetails = state.drills.map((d, idx) => {
       const L = parseLen(d.lengthStr);
       const nTubes = Number(d.pipesCount) || 1;
-      const pits = Number(d.pits) || 0;
+      const pits = Math.max(0, parseInt(d.pits, 10) || 0);
       const dia = d.pipeDia || cableInfo.pipe;
+      const has115 = Boolean(d.k115);
+      const k12Mode = d.k12Mode || "none";
+      const k12PitsCount = k12Mode === "all"
+        ? pits
+        : (k12Mode === "pits_only" ? Math.min(pits, Math.max(0, parseInt(d.k12Pits, 10) || 0)) : 0);
+
+      const has12OnBore = k12Mode === "all";
 
       const dEquivMm = calcEquivBundleDiaMm(dia, nTubes);
       const dBore = calcBoreDiameter(dia, nTubes, L);
       const vBore = (PI_EXCEL * dBore * dBore / 4) * L;
       const waterRate = calcWaterRatePerM(dEquivMm);
+      const waterL = L * waterRate;
 
       totalBoreLength += L;
       totalBoreVolumeM3 += vBore;
-      totalWaterLiters += L * waterRate;
+      totalWaterLiters += waterL;
       totalPits += pits;
+      if (has12OnBore) totalK12BoreLength += L;
+      totalK12Pits += k12PitsCount;
 
       const key = `${nTubes}_${dia}`;
       if (!pipeLayGroups[key]) {
@@ -1001,6 +1230,36 @@
       }
 
       totalCableNet += L * cableInfo.mult;
+
+      let bucketKey = "none";
+      if (has115 && has12OnBore) bucketKey = "both";
+      else if (has115 && !has12OnBore) bucketKey = "only_115";
+      else if (!has115 && has12OnBore) bucketKey = "only_12";
+
+      const drillTitle = (d.title || "").trim() || `Прокол №${idx + 1}`;
+      if (L > 0) {
+        groups[bucketKey].items.push(`${drillTitle} (${fmt(L, 2)} м)`);
+        groups[bucketKey].totalLength += L;
+        groups[bucketKey].boreVolumeM3 += vBore;
+        groups[bucketKey].waterLiters += waterL;
+      }
+
+      // Лаконичный текст для 6-го столбца "Применимость К-1,2"
+      let k12Text = "Не применяется";
+      if (k12Mode === "all") {
+        k12Text = `Приямки (${pits} шт) и бурение`;
+      } else if (k12Mode === "pits_only") {
+        k12Text = `Приямки (${k12PitsCount} шт)`;
+      }
+
+      return {
+        index: idx + 1,
+        title: drillTitle,
+        length: L,
+        pits,
+        has115,
+        k12Text
+      };
     });
 
     const totalCableWithReserve = totalCableNet * 1.02;
@@ -1020,9 +1279,13 @@
       totalCableNet,
       totalCableWithReserve,
       totalPipeEnds,
+      totalK12BoreLength,
+      totalK12Pits,
       pipeLayGroups,
       pipeMetersByDia,
-      ukptCountByDia
+      ukptCountByDia,
+      drillDetails,
+      groups
     };
   }
 
@@ -1041,7 +1304,7 @@
       <div class="kpi-item">Вода: <strong>${fmt(calc.totalWaterLiters, 0)} л</strong> (${fmt(calc.totalWaterLiters / 1000, 3)} м³)</div>
     `;
 
-    // --- ВОР ---
+    // --- 1. ВОР ---
     const vorRows = [];
     let itemIdx = 1;
 
@@ -1144,7 +1407,31 @@
 
     document.getElementById("vorBody").innerHTML = vorRows.join("");
 
-    // --- Спецификация ---
+    // --- 2. Таблица под ВОР: "Участки ГНБ: длины и применимость коэффициентов 1,2 и 1,15" ---
+    const k12Rows = calc.drillDetails.map(item => `
+      <tr>
+        <td class="tc">${item.index}</td>
+        <td>${escapeHtml(item.title)}</td>
+        <td class="tr">${fmt(item.length, 2)}</td>
+        <td class="tc">${item.pits}</td>
+        <td class="tc">${item.has115 ? "Да" : "Нет"}</td>
+        <td>${escapeHtml(item.k12Text)}</td>
+      </tr>
+    `);
+
+    k12Rows.push(`
+      <tr class="total-row">
+        <td></td>
+        <td>Итого по всем участкам</td>
+        <td class="tr">${fmt(calc.totalBoreLength, 2)}</td>
+        <td class="tc">${calc.totalPits}</td>
+        <td class="tc">—</td>
+        <td>Бурение — ${fmt(calc.totalK12BoreLength, 2)} м; приямки — ${calc.totalK12Pits} шт (${fmt(calc.totalK12Pits * 8, 0)} м³)</td>
+      </tr>
+    `);
+    document.getElementById("k12SummaryBody").innerHTML = k12Rows.join("");
+
+    // --- 3. Спецификация ---
     const specRows = [];
     let sPos = 1;
 
@@ -1304,6 +1591,69 @@
     }
 
     document.getElementById("specBody").innerHTML = specRows.join("");
+
+    // --- 4. Таблица под Спецификацией: 4 строки по коэффициентам ---
+    const orderedKeys = ["both", "only_115", "only_12", "none"];
+    const matByKey = {};
+    DRILL_MATERIALS.forEach(m => { matByKey[m.key] = m; });
+
+    const coefRows = orderedKeys.map((k, idx) => {
+      const grp = calc.groups[k];
+      const vBore = grp.boreVolumeM3;
+
+      const calcPackQty = (matKey) => {
+        const m = matByKey[matKey];
+        return Math.round(((vBore * m.kgPerM3Bore) / m.packKg) * 1000) / 1000;
+      };
+
+      const bentQty = calcPackQty("bentonite");
+      const visQty  = calcPackQty("vis");
+      const phpaQty = calcPackQty("phpa");
+      const pacQty  = calcPackQty("pac");
+      const sodaQty = calcPackQty("soda");
+      const wQty    = Math.round(grp.waterLiters * 100) / 100;
+
+      const listDesc = grp.items.length > 0
+        ? `${grp.items.join(", ")} — всего ${fmt(grp.totalLength, 2)} м`
+        : `— (всего 0 м)`;
+
+      return `
+        <tr>
+          <td class="tc">${idx + 1}</td>
+          <td>${escapeHtml(grp.label)}</td>
+          <td>${escapeHtml(listDesc)}</td>
+          <td class="tr">${fmt(bentQty, 3)}</td>
+          <td class="tr">${fmt(visQty, 3)}</td>
+          <td class="tr">${fmt(phpaQty, 3)}</td>
+          <td class="tr">${fmt(pacQty, 3)}</td>
+          <td class="tr">${fmt(sodaQty, 3)}</td>
+          <td class="tr">${fmt(wQty, 2)}</td>
+        </tr>
+      `;
+    });
+
+    const totalBentPacks = Math.round(((calc.totalBoreVolumeM3 * matByKey.bentonite.kgPerM3Bore) / 25) * 1000) / 1000;
+    const totalVisPacks  = Math.round(((calc.totalBoreVolumeM3 * matByKey.vis.kgPerM3Bore) / 25) * 1000) / 1000;
+    const totalPhpaPacks = Math.round(((calc.totalBoreVolumeM3 * matByKey.phpa.kgPerM3Bore) / 25) * 1000) / 1000;
+    const totalPacPacks  = Math.round(((calc.totalBoreVolumeM3 * matByKey.pac.kgPerM3Bore) / 25) * 1000) / 1000;
+    const totalSodaPacks = Math.round(((calc.totalBoreVolumeM3 * matByKey.soda.kgPerM3Bore) / 25) * 1000) / 1000;
+    const totalWaterRounded = Math.round(calc.totalWaterLiters * 100) / 100;
+
+    coefRows.push(`
+      <tr class="total-row">
+        <td></td>
+        <td>Итого</td>
+        <td>Всего длина ГНБ: ${fmt(calc.totalBoreLength, 2)} м</td>
+        <td class="tr">${fmt(totalBentPacks, 3)}</td>
+        <td class="tr">${fmt(totalVisPacks, 3)}</td>
+        <td class="tr">${fmt(totalPhpaPacks, 3)}</td>
+        <td class="tr">${fmt(totalPacPacks, 3)}</td>
+        <td class="tr">${fmt(totalSodaPacks, 3)}</td>
+        <td class="tr">${fmt(totalWaterRounded, 2)}</td>
+      </tr>
+    `);
+
+    document.getElementById("coefMaterialsBody").innerHTML = coefRows.join("");
   }
 
   function escapeHtml(str) {
@@ -1338,8 +1688,8 @@
     sel.removeAllRanges();
   }
 
-  function exportExcel() {
-    const xml = `<?xml version="1.0"?>
+  function buildWorkbookXml(worksheetsXml) {
+    return `<?xml version="1.0"?>
 <?mso-application progid="Excel.Sheet"?>
 <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
  xmlns:o="urn:schemas-microsoft-com:office:office"
@@ -1378,19 +1728,40 @@
    </Borders>
   </Style>
  </Styles>
- ${tableToWorksheetXml("ВОР", document.getElementById("vorTable"))}
- ${tableToWorksheetXml("Спецификация", document.getElementById("specTable"))}
+ ${worksheetsXml}
 </Workbook>`;
+  }
 
-    const blob = new Blob([xml], { type: "application/vnd.ms-excel;charset=utf-8;" });
+  function downloadXls(xmlContent, filename) {
+    const blob = new Blob([xmlContent], { type: "application/vnd.ms-excel;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    const cleanName = (state.lineName || "ГНБ").replace(/[\\/:*?"<>|]/g, "_");
-    a.download = `ВОР_и_Спецификация_ГНБ_${cleanName}.xls`;
+    a.download = filename;
     a.click();
     URL.revokeObjectURL(url);
+  }
+
+  function exportExcel() {
+    const sheets = [
+      tableToWorksheetXml("ВОР", document.getElementById("vorTable")),
+      tableToWorksheetXml("Участки_К1_2_и_К1_15", document.getElementById("k12SummaryTable")),
+      tableToWorksheetXml("Спецификация", document.getElementById("specTable")),
+      tableToWorksheetXml("Расход_по_коэф", document.getElementById("coefMaterialsTable"))
+    ].join("\n");
+
+    const xml = buildWorkbookXml(sheets);
+    const cleanName = (state.lineName || "ГНБ").replace(/[\\/:*?"<>|]/g, "_");
+    downloadXls(xml, `ВОР_и_Спецификация_ГНБ_${cleanName}.xls`);
     showToast("Файл Excel (.xls) сформирован");
+  }
+
+  function exportK12Excel() {
+    const sheet = tableToWorksheetXml("Участки_ГНБ_ПОС", document.getElementById("k12SummaryTable"));
+    const xml = buildWorkbookXml(sheet);
+    const cleanName = (state.lineName || "ГНБ").replace(/[\\/:*?"<>|]/g, "_");
+    downloadXls(xml, `Участки_ГНБ_ПОС_${cleanName}.xls`);
+    showToast("Таблица участков ГНБ выгружена в Excel (.xls)");
   }
 
   function tableToWorksheetXml(sheetName, tableEl) {
@@ -1398,7 +1769,7 @@
     const trs = tableEl.querySelectorAll("tr");
     trs.forEach(tr => {
       const isHead = tr.parentElement.tagName === "THEAD";
-      const isSec = tr.classList.contains("section-row") || tr.classList.contains("title-row");
+      const isSec = tr.classList.contains("section-row") || tr.classList.contains("title-row") || tr.classList.contains("total-row");
       const styleId = isHead ? "Head" : (isSec ? "Sec" : "Default");
       rowsXml += "<Row>";
       tr.querySelectorAll("th, td").forEach(cell => {
