@@ -4,16 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ГНБ-Проект: ВОР и Спецификация КЛ 0,4–10 кВ</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%230b132b'/%3E%3Cstop offset='100%25' stop-color='%231e3a8a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23bg)'/%3E%3Cpath d='M6 25 H58' stroke='%2364748b' stroke-width='2.5' stroke-dasharray='4 3'/%3E%3Cpath d='M10 25 C18 25, 20 46, 32 46 C44 46, 46 25, 54 25' fill='none' stroke='%2338bdf8' stroke-width='4.5' stroke-linecap='round'/%3E%3Cpolygon points='54,20 61,25 54,30' fill='%2338bdf8'/%3E%3Cpolygon points='35,8 25,24 32,24 29,37 40,21 33,21' fill='%23f59e0b'/%3E%3C/svg%3E" />
   <style>
     :root {
-      --bg: #f1f5f9;
+      --bg: #eef2f6;
       --surface: #ffffff;
       --border: #cbd5e1;
       --border-dark: #94a3b8;
       --text: #0f172a;
       --muted: #475569;
-      --primary: #1d4ed8;
-      --primary-hover: #1e40af;
+      --primary: #1e40af;
+      --primary-hover: #1d4ed8;
+      --amber: #f59e0b;
       --accent-soft: #eff6ff;
       --excel-head: #e2e8f0;
       --excel-sec: #dbeafe;
@@ -32,15 +34,16 @@
     }
 
     header {
-      background: #0f172a;
+      background: linear-gradient(90deg, #0b132b 0%, #172554 100%);
       color: #f8fafc;
-      padding: 10px 18px;
+      padding: 11px 18px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      border-bottom: 2px solid var(--primary);
+      border-bottom: 3px solid var(--amber);
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.18);
     }
     .brand-block {
       display: flex;
@@ -48,19 +51,24 @@
       gap: 12px;
       flex-wrap: wrap;
     }
+    .logo-mark {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
     header h1 {
       margin: 0;
       font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 0.2px;
+      font-weight: 700;
+      letter-spacing: 0.25px;
     }
     .author-badge {
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #e2e8f0;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #f1f5f9;
       padding: 3px 10px;
       border-radius: 999px;
       font-size: 11.5px;
@@ -72,7 +80,7 @@
       border-radius: 2px;
       display: inline-block;
       flex-shrink: 0;
-      box-shadow: 0 0 0 1px rgba(255,255,255,0.25);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.28);
     }
     .toolbar {
       display: flex;
@@ -93,18 +101,27 @@
       transition: 0.15s;
     }
     button:hover { background: #f8fafc; }
+    header button {
+      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.95);
+    }
+    header button:hover {
+      background: #ffffff;
+    }
     button.primary {
       background: var(--primary);
       border-color: var(--primary);
       color: #fff;
     }
     button.primary:hover { background: var(--primary-hover); }
-    button.success {
+    button.success, header button.success {
       background: var(--success);
-      border-color: var(--success);
+      border-color: #166534;
       color: #fff;
     }
-    button.success:hover { opacity: 0.92; }
+    button.success:hover, header button.success:hover {
+      background: #166534;
+    }
     button.danger {
       color: var(--danger);
       border-color: #fca5a5;
@@ -113,7 +130,7 @@
     button.danger:hover { background: #fef2f2; }
 
     .container {
-      max-width: 1860px;
+      max-width: 1900px;
       margin: 0 auto;
       padding: 12px;
       display: flex;
@@ -124,9 +141,10 @@
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
+      border-top: 3px solid #1e3a8a;
       border-radius: 6px;
       padding: 12px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
     }
     .card-title {
       font-size: 13px;
@@ -137,7 +155,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 8px;
-      color: #1e293b;
+      color: #0f172a;
     }
     .sub-card-header {
       margin: 16px 0 8px 0;
@@ -186,12 +204,14 @@
       display: flex;
       flex-wrap: wrap;
       gap: 14px;
-      background: var(--accent-soft);
-      border: 1px solid #bfdbfe;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-left: 4px solid var(--amber);
       padding: 8px 12px;
       border-radius: 5px;
       margin-top: 10px;
       font-size: 12px;
+      font-variant-numeric: tabular-nums;
     }
     .kpi-item strong { color: var(--primary); }
 
@@ -206,9 +226,13 @@
       vertical-align: middle;
     }
     .input-table th {
-      background: #f8fafc;
+      background: #f1f5f9;
       font-size: 11.5px;
-      color: var(--muted);
+      color: #334155;
+      font-weight: 600;
+    }
+    .input-table tbody tr:hover {
+      background: #f8fafc;
     }
     .pits-k12-box {
       margin-top: 5px;
@@ -299,6 +323,20 @@
       font-weight: 600;
       color: #334155;
       white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    .badge-num {
+      display: inline-block;
+      min-width: 28px;
+      text-align: center;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #1e3a8a;
+      font-variant-numeric: tabular-nums;
     }
 
     .checkbox-label {
@@ -332,6 +370,13 @@
 
 <header>
   <div class="brand-block">
+    <svg class="logo-mark" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect width="64" height="64" rx="14" fill="#1e3a8a" stroke="#f59e0b" stroke-width="3"/>
+      <path d="M6 25 H58" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="4 3"/>
+      <path d="M10 25 C18 25, 20 46, 32 46 C44 46, 46 25, 54 25" fill="none" stroke="#38bdf8" stroke-width="4.5" stroke-linecap="round"/>
+      <polygon points="54,20 61,25 54,30" fill="#38bdf8"/>
+      <polygon points="35,8 25,24 32,24 29,37 40,21 33,21" fill="#f59e0b"/>
+    </svg>
     <h1>ГНБ-Проект: ВОР и Спецификация КЛ 0,4–10 кВ</h1>
     <span class="author-badge">
       <svg class="flag-us-svg" viewBox="0 0 190 100" xmlns="http://www.w3.org/2000/svg" aria-label="USA">
@@ -407,23 +452,25 @@
   <!-- 2. Участки (проколы) ГНБ -->
   <div class="card">
     <div class="card-title">
-      <span>2. Участки прокладки методом ГНБ</span>
+      <span>2. Участки прокладки методом ГНБ (поставка труб хлыстами по 12 м)</span>
     </div>
 
     <div class="table-wrap" style="border: none;">
       <table class="input-table">
         <thead>
           <tr>
-            <th style="width: 40px;">№</th>
+            <th style="width: 38px;">№</th>
             <th>Примечание / номер прокола</th>
-            <th style="width: 92px; text-align: center;">Коэф. 1,15<br><span style="font-weight:400;font-size:10.5px;">(стеснённые)</span></th>
-            <th style="width: 225px;">Коэф. 1,2<br><span style="font-weight:400;font-size:10.5px;">(охранная зона КЛ)</span></th>
-            <th style="width: 130px;">Длина ГНБ, м</th>
-            <th style="width: 215px;">Тип ГНБ (труб в скважине)</th>
-            <th style="width: 115px;">Кол-во приямков, шт</th>
-            <th style="width: 225px;">Диаметр трубы ПНД (SN32 F2)</th>
-            <th style="width: 225px;">Расчёт канала (Dэкв / Dбур / Vкан)</th>
-            <th style="width: 44px;"></th>
+            <th style="width: 118px;">Длина ГНБ, м</th>
+            <th style="width: 88px; text-align: center;">Коэф. 1,15<br><span style="font-weight:400;font-size:10.5px;">(стеснённые)</span></th>
+            <th style="width: 215px;">Коэф. 1,2<br><span style="font-weight:400;font-size:10.5px;">(охранная зона КЛ)</span></th>
+            <th style="width: 205px;">Тип ГНБ (труб в скважине)</th>
+            <th style="width: 105px;">Кол-во приямков, шт</th>
+            <th style="width: 215px;">Диаметр трубы ПНД (SN32 F2)</th>
+            <th style="width: 82px; text-align: center;">Сварка труб, шт</th>
+            <th style="width: 82px; text-align: center;">Резка труб, шт</th>
+            <th style="width: 215px;">Расчёт канала (Dэкв / Dбур / Vкан)</th>
+            <th style="width: 40px;"></th>
           </tr>
         </thead>
         <tbody id="drillsBody"></tbody>
@@ -542,6 +589,8 @@
               <th>Полимер Terra Raid (PAC), 25 кг, шт</th>
               <th>Сода кальц., 25 кг, шт</th>
               <th>Вода техническая, л</th>
+              <th>Сварка труб, шт</th>
+              <th>Резка труб, шт</th>
             </tr>
           </thead>
           <tbody id="coefMaterialsBody"></tbody>
@@ -556,6 +605,7 @@
 
 <script>
   const PI_EXCEL = 3.14;
+  const PIPE_SUPPLY_LENGTH_M = 12;
 
   // База кабелей строго по приложенной таблице (25 позиций)
   const CABLE_CATALOG = [
@@ -799,8 +849,7 @@
     return Math.round(dBore * 10000) / 10000;
   }
 
-  // Расход воды технической по формуле Excel:
-  // ЕСЛИ(Dэкв=0;0;ЕСЛИ(Dэкв<=110;0,15;ЕСЛИ(Dэкв<=225;0,69;ЕСЛИ(Dэкв<=400;2,16;0)))) * 1000 л/м
+  // Расход воды технической по формуле Excel
   function calcWaterRatePerM(dEquivMm) {
     if (dEquivMm <= 0) return 0;
     if (dEquivMm <= 110) return 150;
@@ -809,7 +858,22 @@
     return 0;
   }
 
-  const STORAGE_KEY = "gnb_pont_app_final_v5";
+  // Расчёт сварок и резок труб при поставке хлыстами по 12 м
+  function calcWeldsAndCuts(lengthM, pipesCount) {
+    const L = Math.round(lengthM * 1e6) / 1e6;
+    const n = Math.max(1, Number(pipesCount) || 1);
+    if (L <= 0) {
+      return { welds: 0, cuts: 0 };
+    }
+    const pipesPerLine = Math.ceil(L / PIPE_SUPPLY_LENGTH_M);
+    const welds = Math.max(0, pipesPerLine - 1) * n;
+    const rem = Math.round((L % PIPE_SUPPLY_LENGTH_M) * 1e6) / 1e6;
+    const needsCut = rem > 0 && Math.abs(rem - PIPE_SUPPLY_LENGTH_M) > 1e-6;
+    const cuts = (needsCut ? 1 : 0) * n;
+    return { welds, cuts };
+  }
+
+  const STORAGE_KEY = "gnb_pont_app_final_v6";
 
   function makeDefaultDrill(id = 1, defaultPipe = "63") {
     return {
@@ -962,6 +1026,14 @@
     const dEquiv = calcEquivBundleDiaMm(row.pipeDia, nTubes);
     const dBore = calcBoreDiameter(row.pipeDia, nTubes, L);
     const vBore = (PI_EXCEL * dBore * dBore / 4) * L;
+    const { welds, cuts } = calcWeldsAndCuts(L, nTubes);
+
+    const weldsBadge = document.getElementById(`weldsBadge_${id}`);
+    if (weldsBadge) weldsBadge.textContent = welds;
+
+    const cutsBadge = document.getElementById(`cutsBadge_${id}`);
+    if (cutsBadge) cutsBadge.textContent = cuts;
+
     const badge = document.getElementById(`boreBadge_${id}`);
     if (badge) {
       badge.textContent = `Dэкв=${fmt(dEquiv, 2)} | D=${fmt(dBore, 4)} м | ${fmt(vBore, 3)} м³`;
@@ -1078,6 +1150,7 @@
       const dEquiv = calcEquivBundleDiaMm(d.pipeDia, nTubes);
       const dBore = calcBoreDiameter(d.pipeDia, nTubes, L);
       const vBore = (PI_EXCEL * dBore * dBore / 4) * L;
+      const { welds, cuts } = calcWeldsAndCuts(L, nTubes);
       const totalPits = Math.max(0, parseInt(d.pits, 10) || 0);
       const k12PitsVal = Math.min(totalPits, Math.max(0, parseInt(d.k12Pits, 10) || 0));
 
@@ -1087,6 +1160,11 @@
           <td>
             <input type="text" value="${escapeHtml(d.title)}"
               onchange="updateDrill(${d.id}, 'title', this.value)" />
+          </td>
+          <td>
+            <input type="text" inputmode="decimal" placeholder="Например: 90"
+              value="${escapeHtml(d.lengthStr)}"
+              oninput="onLengthInput(${d.id}, this.value)" />
           </td>
           <td class="tc">
             <input type="checkbox" ${d.k115 ? "checked" : ""}
@@ -1106,11 +1184,6 @@
                 <span>из ${totalPits} шт</span>
               </div>
             ` : ""}
-          </td>
-          <td>
-            <input type="text" inputmode="decimal" placeholder="Например: 86"
-              value="${escapeHtml(d.lengthStr)}"
-              oninput="onLengthInput(${d.id}, this.value)" />
           </td>
           <td>
             <select onchange="updateDrill(${d.id}, 'pipesCount', this.value)">
@@ -1135,6 +1208,12 @@
             </select>
           </td>
           <td class="tc">
+            <span class="badge-num" id="weldsBadge_${d.id}">${welds}</span>
+          </td>
+          <td class="tc">
+            <span class="badge-num" id="cutsBadge_${d.id}">${cuts}</span>
+          </td>
+          <td class="tc">
             <span class="badge-calc" id="boreBadge_${d.id}">Dэкв=${fmt(dEquiv, 2)} | D=${fmt(dBore, 4)} м | ${fmt(vBore, 3)} м³</span>
           </td>
           <td class="tc">
@@ -1152,7 +1231,9 @@
       items: [],
       totalLength: 0,
       boreVolumeM3: 0,
-      waterLiters: 0
+      waterLiters: 0,
+      welds: 0,
+      cuts: 0
     };
   }
 
@@ -1175,12 +1256,14 @@
     let totalPipeEnds = 0;
     let totalK12BoreLength = 0;
     let totalK12Pits = 0;
+    let totalWelds = 0;
+    let totalCuts = 0;
 
     const pipeLayGroups = {};
     const pipeMetersByDia = { "63": 0, "110": 0, "160": 0, "225": 0 };
     const ukptCountByDia = { "63": 0, "110": 0, "160": 0, "225": 0 };
 
-    // 4 группы по коэффициентам на бурение (раствор и вода)
+    // 4 группы по коэффициентам на бурение (раствор, вода, сварка и резка труб)
     const groups = {
       both: createEmptyGroupBucket("both", "Совмещение коэффициентов 1,15 и 1,2"),
       only_115: createEmptyGroupBucket("only_115", "Только коэффициент 1,15 (стеснённые условия)"),
@@ -1206,11 +1289,14 @@
       const vBore = (PI_EXCEL * dBore * dBore / 4) * L;
       const waterRate = calcWaterRatePerM(dEquivMm);
       const waterL = L * waterRate;
+      const { welds, cuts } = calcWeldsAndCuts(L, nTubes);
 
       totalBoreLength += L;
       totalBoreVolumeM3 += vBore;
       totalWaterLiters += waterL;
       totalPits += pits;
+      totalWelds += welds;
+      totalCuts += cuts;
       if (has12OnBore) totalK12BoreLength += L;
       totalK12Pits += k12PitsCount;
 
@@ -1242,9 +1328,10 @@
         groups[bucketKey].totalLength += L;
         groups[bucketKey].boreVolumeM3 += vBore;
         groups[bucketKey].waterLiters += waterL;
+        groups[bucketKey].welds += welds;
+        groups[bucketKey].cuts += cuts;
       }
 
-      // Лаконичный текст для 6-го столбца "Применимость К-1,2"
       let k12Text = "Не применяется";
       if (k12Mode === "all") {
         k12Text = `Приямки (${pits} шт) и бурение`;
@@ -1258,7 +1345,9 @@
         length: L,
         pits,
         has115,
-        k12Text
+        k12Text,
+        welds,
+        cuts
       };
     });
 
@@ -1281,6 +1370,8 @@
       totalPipeEnds,
       totalK12BoreLength,
       totalK12Pits,
+      totalWelds,
+      totalCuts,
       pipeLayGroups,
       pipeMetersByDia,
       ukptCountByDia,
@@ -1300,11 +1391,12 @@
       <div class="kpi-item">Длина ГНБ: <strong>${fmt(calc.totalBoreLength, 2)} м</strong> (${calc.totalDrillsCount} уч.)</div>
       <div class="kpi-item">Vкан: <strong>${fmt(calc.totalBoreVolumeM3, 3)} м³</strong></div>
       <div class="kpi-item">Бентонит: <strong>${fmt(totalBentoniteKg, 3)} кг</strong> (${fmt(totalBentoniteKg / 25, 3)} шт)</div>
-      <div class="kpi-item">Полимеры (всего): <strong>${fmt(totalPolymersKg, 3)} кг</strong> (40%/20%/40%)</div>
+      <div class="kpi-item">Полимеры: <strong>${fmt(totalPolymersKg, 3)} кг</strong> (40%/20%/40%)</div>
       <div class="kpi-item">Вода: <strong>${fmt(calc.totalWaterLiters, 0)} л</strong> (${fmt(calc.totalWaterLiters / 1000, 3)} м³)</div>
+      <div class="kpi-item">Сварка / резка труб: <strong>${calc.totalWelds} / ${calc.totalCuts} шт</strong></div>
     `;
 
-    // --- 1. ВОР ---
+    // --- 1. ВОР (без изменений) ---
     const vorRows = [];
     let itemIdx = 1;
 
@@ -1431,7 +1523,7 @@
     `);
     document.getElementById("k12SummaryBody").innerHTML = k12Rows.join("");
 
-    // --- 3. Спецификация ---
+    // --- 3. Спецификация (без изменений) ---
     const specRows = [];
     let sPos = 1;
 
@@ -1592,7 +1684,7 @@
 
     document.getElementById("specBody").innerHTML = specRows.join("");
 
-    // --- 4. Таблица под Спецификацией: 4 строки по коэффициентам ---
+    // --- 4. Таблица под Спецификацией: 4 строки по коэффициентам + сварка и резка труб ---
     const orderedKeys = ["both", "only_115", "only_12", "none"];
     const matByKey = {};
     DRILL_MATERIALS.forEach(m => { matByKey[m.key] = m; });
@@ -1628,6 +1720,8 @@
           <td class="tr">${fmt(pacQty, 3)}</td>
           <td class="tr">${fmt(sodaQty, 3)}</td>
           <td class="tr">${fmt(wQty, 2)}</td>
+          <td class="tr">${fmt(grp.welds, 0)}</td>
+          <td class="tr">${fmt(grp.cuts, 0)}</td>
         </tr>
       `;
     });
@@ -1650,6 +1744,8 @@
         <td class="tr">${fmt(totalPacPacks, 3)}</td>
         <td class="tr">${fmt(totalSodaPacks, 3)}</td>
         <td class="tr">${fmt(totalWaterRounded, 2)}</td>
+        <td class="tr">${fmt(calc.totalWelds, 0)}</td>
+        <td class="tr">${fmt(calc.totalCuts, 0)}</td>
       </tr>
     `);
 
