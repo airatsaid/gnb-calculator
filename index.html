@@ -463,7 +463,7 @@
             <th>Примечание / номер прокола</th>
             <th style="width: 118px;">Длина ГНБ, м</th>
             <th style="width: 88px; text-align: center;">Коэф. 1,15<br><span style="font-weight:400;font-size:10.5px;">(стеснённые)</span></th>
-            <th style="width: 215px;">Коэф. 1,2<br><span style="font-weight:400;font-size:10.5px;">(охранная зона КЛ)</span></th>
+            <th style="width: 225px;">Коэф. 1,2<br><span style="font-weight:400;font-size:10.5px;">(охранная зона КЛ)</span></th>
             <th style="width: 205px;">Тип ГНБ (труб в скважине)</th>
             <th style="width: 105px;">Кол-во приямков, шт</th>
             <th style="width: 215px;">Диаметр трубы ПНД (SN32 F2)</th>
@@ -873,14 +873,14 @@
     return { welds, cuts };
   }
 
-  const STORAGE_KEY = "gnb_pont_app_final_v6";
+  const STORAGE_KEY = "gnb_pont_app_final_v7";
 
   function makeDefaultDrill(id = 1, defaultPipe = "63") {
     return {
       id,
       title: `Прокол №${id}`,
       k115: false,
-      k12Mode: "none", // "none" | "all" | "pits_only"
+      k12Mode: "none", // "none" | "all" | "pits_only" | "bore_only"
       k12Pits: 2,
       lengthStr: "",
       pipesCount: 1,
@@ -1175,6 +1175,7 @@
               <option value="none" ${d.k12Mode === "none" ? "selected" : ""}>Нет</option>
               <option value="all" ${d.k12Mode === "all" ? "selected" : ""}>Весь участок (бурение + приямки)</option>
               <option value="pits_only" ${d.k12Mode === "pits_only" ? "selected" : ""}>Только приямки</option>
+              <option value="bore_only" ${d.k12Mode === "bore_only" ? "selected" : ""}>Только бурение</option>
             </select>
             ${d.k12Mode === "pits_only" ? `
               <div class="pits-k12-box">
@@ -1282,7 +1283,7 @@
         ? pits
         : (k12Mode === "pits_only" ? Math.min(pits, Math.max(0, parseInt(d.k12Pits, 10) || 0)) : 0);
 
-      const has12OnBore = k12Mode === "all";
+      const has12OnBore = k12Mode === "all" || k12Mode === "bore_only";
 
       const dEquivMm = calcEquivBundleDiaMm(dia, nTubes);
       const dBore = calcBoreDiameter(dia, nTubes, L);
@@ -1337,6 +1338,8 @@
         k12Text = `Приямки (${pits} шт) и бурение`;
       } else if (k12Mode === "pits_only") {
         k12Text = `Приямки (${k12PitsCount} шт)`;
+      } else if (k12Mode === "bore_only") {
+        k12Text = "Бурение";
       }
 
       return {
@@ -1396,7 +1399,7 @@
       <div class="kpi-item">Сварка / резка труб: <strong>${calc.totalWelds} / ${calc.totalCuts} шт</strong></div>
     `;
 
-    // --- 1. ВОР (без изменений) ---
+    // --- 1. ВОР ---
     const vorRows = [];
     let itemIdx = 1;
 
@@ -1523,7 +1526,7 @@
     `);
     document.getElementById("k12SummaryBody").innerHTML = k12Rows.join("");
 
-    // --- 3. Спецификация (без изменений) ---
+    // --- 3. Спецификация ---
     const specRows = [];
     let sPos = 1;
 
